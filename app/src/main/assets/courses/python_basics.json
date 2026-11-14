@@ -1,0 +1,929 @@
+{
+ "id": "python_basics",
+ "title": "Python Basics",
+ "language": "python",
+ "description": "Core Python 3.13 concepts, from print() to functions.",
+ "chapters": [
+  {
+   "number": 1,
+   "section": "FOUNDATIONS",
+   "title": "Whetting Your Appetite",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Why Python?",
+     "body": "Python is a **high-level** language famous for clear, readable code. It powers **web apps**, **data science**, **automation** and **AI**.\n\nIn this course you will learn the core ideas every Python program is built from."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "Interpreted and Interactive",
+     "body": "Python is an **interpreted** language: your code runs line by line with no separate compile step, so experiments are fast.\n\nYou can type code at an **interactive prompt** or save it in a **script** and run it whenever you like."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Your first program",
+     "code": "print(\"Hello, Python!\")\nname = \"Ada\"\nprint(\"Nice to meet you,\", name)",
+     "notes": [
+      {
+       "line": 1,
+       "text": "print() shows text on the screen."
+      },
+      {
+       "line": 2,
+       "text": "A variable named name now stores the string \"Ada\"."
+      },
+      {
+       "line": 3,
+       "text": "print() accepts several values and separates them with a space."
+      }
+     ],
+     "output": "Hello, Python!\nNice to meet you, Ada"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Python as a calculator",
+     "code": "# Python as a calculator\nprint(2 + 3 * 4)\nprint((2 + 3) * 4)\nprint(10 / 4)\nprint(10 // 4)",
+     "notes": [
+      {
+       "line": 2,
+       "text": "Multiplication happens before addition, so this is 2 + 12."
+      },
+      {
+       "line": 3,
+       "text": "Parentheses change the order of evaluation."
+      },
+      {
+       "line": 4,
+       "text": "A single slash always gives a float result."
+      },
+      {
+       "line": 5,
+       "text": "Double slash is floor division and drops the fraction."
+      }
+     ],
+     "output": "14\n20\n2.5\n2"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does print(7 // 2) display?",
+     "code": "",
+     "options": [
+      "3.5",
+      "3",
+      "4",
+      "2"
+     ],
+     "answer": 1,
+     "explanation": "Floor division rounds the result down to a whole number, so 7 // 2 is 3."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "Which statement about Python is true?",
+     "code": "",
+     "options": [
+      "Python needs a separate compile step before every run",
+      "Python groups statements using indentation",
+      "Python can only be used for websites",
+      "Python has no variables"
+     ],
+     "answer": 1,
+     "explanation": "Python uses indentation to group statements into blocks."
+    }
+   ]
+  },
+  {
+   "number": 2,
+   "section": "FOUNDATIONS",
+   "title": "Using the Interpreter",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Interactive mode and scripts",
+     "body": "Start the interpreter by typing **python3**. It shows the **>>>** prompt and evaluates each line you type.\n\nFor larger programs, save code in a file such as **app.py** and run it with **python3 app.py**."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "Comments and quotes",
+     "body": "A **#** starts a comment that Python ignores. Strings can use **single** or **double** quotes, so you can write 'it is' or \"it's\" without trouble.\n\nGood comments explain **why** the code exists, not what each line already says."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Comments in action",
+     "code": "# This is a comment\ntext = \"Python\"  # trailing comment\nprint(text)\nprint(len(text))",
+     "notes": [
+      {
+       "line": 1,
+       "text": "The whole line is ignored by Python."
+      },
+      {
+       "line": 2,
+       "text": "A comment can follow code on the same line."
+      },
+      {
+       "line": 4,
+       "text": "len() counts the characters in a string."
+      }
+     ],
+     "output": "Python\n6"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Meeting the sys module",
+     "code": "import sys\nprint(sys.version_info.major)\nprint(__name__)",
+     "notes": [
+      {
+       "line": 1,
+       "text": "import loads a module from the standard library."
+      },
+      {
+       "line": 2,
+       "text": "version_info.major is the major Python version number."
+      },
+      {
+       "line": 3,
+       "text": "When run as a script, __name__ equals \"__main__\"."
+      }
+     ],
+     "output": "3\n__main__"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "Which symbol starts a comment in Python?",
+     "code": "",
+     "options": [
+      "//",
+      "#",
+      "--",
+      "/*"
+     ],
+     "answer": 1,
+     "explanation": "Python comments begin with the # character."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What prompt does the interactive interpreter show?",
+     "code": "",
+     "options": [
+      ">>>",
+      "$",
+      "C:\\>",
+      "#>"
+     ],
+     "answer": 0,
+     "explanation": "The primary prompt is >>>."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does this script print?",
+     "code": "x = 5\nx + 1\nprint(x)",
+     "options": [
+      "6",
+      "5",
+      "Nothing",
+      "An error"
+     ],
+     "answer": 1,
+     "explanation": "In a script, the bare expression x + 1 is evaluated but not printed. Only print(x) outputs 5."
+    }
+   ]
+  },
+  {
+   "number": 3,
+   "section": "FOUNDATIONS",
+   "title": "Numbers and Strings",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Numbers",
+     "body": "Python has **int** for whole numbers and **float** for decimals. Use **+ - * /** as expected, **//** for floor division, **%** for remainder and **\\*\\*** for powers."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "Strings",
+     "body": "A **string** is text in quotes. You can **index** characters with square brackets, **slice** ranges with a colon, and join strings with **+**.\n\n**f-strings** let you embed values: f\"Hi {name}\"."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Number operators",
+     "code": "a = 17\nb = 5\nprint(a / b)\nprint(a // b)\nprint(a % b)\nprint(a ** 2)",
+     "notes": [
+      {
+       "line": 3,
+       "text": "True division gives 3.4."
+      },
+      {
+       "line": 4,
+       "text": "Floor division gives 3."
+      },
+      {
+       "line": 5,
+       "text": "The remainder of 17 divided by 5 is 2."
+      },
+      {
+       "line": 6,
+       "text": "Two stars raise to a power: 17 squared."
+      }
+     ],
+     "output": "3.4\n3\n2\n289"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Indexing and slicing",
+     "code": "word = \"Python\"\nprint(word[0])\nprint(word[-1])\nprint(word[0:2])\nprint(word + \"!\" * 3)",
+     "notes": [
+      {
+       "line": 2,
+       "text": "Index 0 is the first character."
+      },
+      {
+       "line": 3,
+       "text": "Negative indexes count from the end."
+      },
+      {
+       "line": 4,
+       "text": "A slice stops before the end index."
+      },
+      {
+       "line": 5,
+       "text": "Repetition happens before concatenation."
+      }
+     ],
+     "output": "P\nn\nPy\nPython!!!"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "f-strings",
+     "code": "name = \"Ada\"\nage = 36\nprint(f\"{name} is {age} years old\")\nprint(f\"{3.14159:.2f}\")",
+     "notes": [
+      {
+       "line": 3,
+       "text": "Curly braces insert variable values into the string."
+      },
+      {
+       "line": 4,
+       "text": "The :.2f format rounds to two decimal places."
+      }
+     ],
+     "output": "Ada is 36 years old\n3.14"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does print(\"ab\" * 3) display?",
+     "code": "",
+     "options": [
+      "ab3",
+      "ababab",
+      "ab ab ab",
+      "Error"
+     ],
+     "answer": 1,
+     "explanation": "Multiplying a string repeats it."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does this print?",
+     "code": "word = \"Python\"\nprint(word[1:4])",
+     "options": [
+      "yth",
+      "Pyt",
+      "ytho",
+      "thon"
+     ],
+     "answer": 0,
+     "explanation": "A slice from index 1 up to (not including) 4 gives yth."
+    }
+   ]
+  },
+  {
+   "number": 4,
+   "section": "DATA & FLOW",
+   "title": "Lists",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Lists hold sequences",
+     "body": "A **list** stores items in order, written with square brackets: [1, 2, 3]. Lists can hold **any** type and even mix types.\n\nItems are reached by **index**, starting at 0."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "Lists are mutable",
+     "body": "Lists can be **changed** after creation. Useful methods include **append()**, **pop()**, **sort()** and **insert()**.\n\nBuilt-ins such as **len()**, **sum()** and **max()** work on lists too."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Building a list",
+     "code": "fruits = [\"apple\", \"banana\", \"cherry\"]\nfruits.append(\"date\")\nprint(fruits)\nprint(fruits[1])\nprint(len(fruits))",
+     "notes": [
+      {
+       "line": 2,
+       "text": "append adds an item to the end."
+      },
+      {
+       "line": 3,
+       "text": "Printing a list shows its brackets and quotes."
+      },
+      {
+       "line": 4,
+       "text": "Index 1 is the second item."
+      },
+      {
+       "line": 5,
+       "text": "len counts the items."
+      }
+     ],
+     "output": "['apple', 'banana', 'cherry', 'date']\nbanana\n4"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Sorting and slicing",
+     "code": "nums = [5, 2, 9, 1]\nnums.sort()\nprint(nums)\nprint(nums[1:3])\nprint(sum(nums))\nprint(max(nums))",
+     "notes": [
+      {
+       "line": 2,
+       "text": "sort() reorders the list in place."
+      },
+      {
+       "line": 4,
+       "text": "A slice returns a new list."
+      },
+      {
+       "line": 5,
+       "text": "sum adds all the numbers."
+      },
+      {
+       "line": 6,
+       "text": "max finds the largest item."
+      }
+     ],
+     "output": "[1, 2, 5, 9]\n[2, 5]\n17\n9"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "List comprehensions",
+     "code": "squares = [n * n for n in range(1, 6)]\nprint(squares)",
+     "notes": [
+      {
+       "line": 1,
+       "text": "A comprehension builds a new list from a loop in one line."
+      },
+      {
+       "line": 2,
+       "text": "range(1, 6) produced 1 through 5."
+      }
+     ],
+     "output": "[1, 4, 9, 16, 25]"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does this print?",
+     "code": "lst = [1, 2, 3]\nlst.append(4)\nprint(lst[-1])",
+     "options": [
+      "3",
+      "4",
+      "[1, 2, 3, 4]",
+      "Error"
+     ],
+     "answer": 1,
+     "explanation": "After append(4) the last item, index -1, is 4."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "Which method removes and returns the last item of a list?",
+     "code": "",
+     "options": [
+      "remove()",
+      "pop()",
+      "delete()",
+      "clear()"
+     ],
+     "answer": 1,
+     "explanation": "pop() with no argument removes and returns the last item."
+    }
+   ]
+  },
+  {
+   "number": 5,
+   "section": "DATA & FLOW",
+   "title": "Control Flow",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Making decisions",
+     "body": "**if**, **elif** and **else** choose which block runs. Conditions use comparison operators like **==**, **!=**, **<** and **>**, and can be combined with **and**, **or** and **not**."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "Repeating work",
+     "body": "A **for** loop walks over a sequence, and **range()** generates numbers. A **while** loop repeats while a condition stays true.\n\nUse **break** to leave a loop and **continue** to skip to the next round."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "if / elif / else",
+     "code": "temp = 25\nif temp > 30:\n    print(\"hot\")\nelif temp > 20:\n    print(\"warm\")\nelse:\n    print(\"cool\")",
+     "notes": [
+      {
+       "line": 2,
+       "text": "False, because 25 is not above 30."
+      },
+      {
+       "line": 4,
+       "text": "True, so this branch runs."
+      },
+      {
+       "line": 7,
+       "text": "Skipped because an earlier branch matched."
+      }
+     ],
+     "output": "warm"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "for loops",
+     "code": "for i in range(3):\n    print(\"Loop\", i)\ntotal = 0\nfor n in [1, 2, 3, 4]:\n    total += n\nprint(\"Total:\", total)",
+     "notes": [
+      {
+       "line": 1,
+       "text": "range(3) yields 0, 1 and 2."
+      },
+      {
+       "line": 5,
+       "text": "+= adds to the variable in place."
+      },
+      {
+       "line": 6,
+       "text": "This line is outside the loop, so it runs once."
+      }
+     ],
+     "output": "Loop 0\nLoop 1\nLoop 2\nTotal: 10"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "while and break",
+     "code": "count = 0\nwhile True:\n    count += 1\n    if count == 3:\n        break\nprint(count)",
+     "notes": [
+      {
+       "line": 2,
+       "text": "while True would run forever without a break."
+      },
+      {
+       "line": 5,
+       "text": "break leaves the loop immediately."
+      }
+     ],
+     "output": "3"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "Which numbers does range(2, 5) produce?",
+     "code": "",
+     "options": [
+      "2, 3, 4, 5",
+      "2, 3, 4",
+      "3, 4, 5",
+      "2, 5"
+     ],
+     "answer": 1,
+     "explanation": "range stops before the end value."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does this print?",
+     "code": "for i in range(1, 4):\n    if i == 2:\n        continue\n    print(i)",
+     "options": [
+      "1 then 2 then 3",
+      "1 then 3",
+      "2 only",
+      "3 only"
+     ],
+     "answer": 1,
+     "explanation": "When i is 2 the loop continues without printing."
+    }
+   ]
+  },
+  {
+   "number": 6,
+   "section": "STRUCTURE",
+   "title": "Functions",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Defining functions",
+     "body": "A function packages reusable code. Use **def**, a name, parameters in parentheses and an indented body. **return** sends a value back to the caller.\n\nA function without return gives back **None**."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "Parameters and scope",
+     "body": "Parameters can have **default values** and be passed by **keyword**. Variables created inside a function are **local** and disappear when it ends.\n\n***args** collects any number of extra positional values."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "A simple function",
+     "code": "def square(x):\n    return x * x\n\nprint(square(4))\nprint(square(square(2)))",
+     "notes": [
+      {
+       "line": 1,
+       "text": "def starts the definition and x is a parameter."
+      },
+      {
+       "line": 2,
+       "text": "return hands the answer back."
+      },
+      {
+       "line": 4,
+       "text": "Calls the function with 4."
+      },
+      {
+       "line": 5,
+       "text": "Function calls can be nested."
+      }
+     ],
+     "output": "16\n16"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Defaults and keywords",
+     "code": "def greet(name, greeting=\"Hello\"):\n    return f\"{greeting}, {name}!\"\n\nprint(greet(\"Ada\"))\nprint(greet(\"Linus\", greeting=\"Hi\"))",
+     "notes": [
+      {
+       "line": 1,
+       "text": "greeting has a default value."
+      },
+      {
+       "line": 4,
+       "text": "Uses the default greeting."
+      },
+      {
+       "line": 5,
+       "text": "A keyword argument overrides the default."
+      }
+     ],
+     "output": "Hello, Ada!\nHi, Linus!"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Variable arguments",
+     "code": "def total(*numbers):\n    return sum(numbers)\n\nprint(total(1, 2, 3))\nprint(total())",
+     "notes": [
+      {
+       "line": 1,
+       "text": "*numbers collects all positional arguments in a tuple."
+      },
+      {
+       "line": 5,
+       "text": "With no arguments the tuple is empty, so the sum is 0."
+      }
+     ],
+     "output": "6\n0"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does a function without a return statement give back?",
+     "code": "",
+     "options": [
+      "0",
+      "An empty string",
+      "None",
+      "An error"
+     ],
+     "answer": 2,
+     "explanation": "Functions without return give back None."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does this print?",
+     "code": "def f(x, y=2):\n    return x * y\n\nprint(f(3))",
+     "options": [
+      "5",
+      "6",
+      "3",
+      "Error"
+     ],
+     "answer": 1,
+     "explanation": "y defaults to 2, so f(3) is 3 * 2."
+    }
+   ]
+  }
+ ],
+ "quiz": [
+  {
+   "chapter": 1,
+   "question": "What does print(3 * 'ha') output?",
+   "code": "",
+   "options": [
+    "hahaha",
+    "3ha",
+    "ha3",
+    "Error"
+   ],
+   "answer": 0,
+   "explanation": "Multiplying a string repeats it."
+  },
+  {
+   "chapter": 1,
+   "question": "Which operator performs floor division?",
+   "code": "",
+   "options": [
+    "/",
+    "//",
+    "%",
+    "**"
+   ],
+   "answer": 1,
+   "explanation": "// divides and rounds down."
+  },
+  {
+   "chapter": 1,
+   "question": "Python is best described as:",
+   "code": "",
+   "options": [
+    "A compiled-only language",
+    "An interpreted high-level language",
+    "A markup language",
+    "A database"
+   ],
+   "answer": 1,
+   "explanation": "Python is interpreted and high level."
+  },
+  {
+   "chapter": 2,
+   "question": "How do you run a script named app.py from a terminal?",
+   "code": "",
+   "options": [
+    "run app.py",
+    "python3 app.py",
+    "open app.py",
+    "compile app.py"
+   ],
+   "answer": 1,
+   "explanation": "The interpreter is invoked with python3 followed by the file name."
+  },
+  {
+   "chapter": 2,
+   "question": "What does this print when run as a script?",
+   "code": "print(__name__)",
+   "options": [
+    "__main__",
+    "main",
+    "None",
+    "Error"
+   ],
+   "answer": 0,
+   "explanation": "A script's __name__ is \"__main__\"."
+  },
+  {
+   "chapter": 3,
+   "question": "What does len('Python') return?",
+   "code": "",
+   "options": [
+    "5",
+    "6",
+    "7",
+    "Error"
+   ],
+   "answer": 1,
+   "explanation": "The word has six characters."
+  },
+  {
+   "chapter": 3,
+   "question": "What does this print?",
+   "code": "print(f\"{2 + 3}\")",
+   "options": [
+    "2 + 3",
+    "5",
+    "23",
+    "Error"
+   ],
+   "answer": 1,
+   "explanation": "The expression inside braces is evaluated."
+  },
+  {
+   "chapter": 3,
+   "question": "What does this print?",
+   "code": "print(\"Python\"[-2])",
+   "options": [
+    "P",
+    "n",
+    "o",
+    "y"
+   ],
+   "answer": 2,
+   "explanation": "Index -2 is the second character from the end."
+  },
+  {
+   "chapter": 4,
+   "question": "What does this print?",
+   "code": "nums = [3, 1, 2]\nnums.sort()\nprint(nums)",
+   "options": [
+    "[3, 1, 2]",
+    "[1, 2, 3]",
+    "[3, 2, 1]",
+    "None"
+   ],
+   "answer": 1,
+   "explanation": "sort() orders the list ascending in place."
+  },
+  {
+   "chapter": 4,
+   "question": "What does this print?",
+   "code": "print([1, 2, 3][1:])",
+   "options": [
+    "[2, 3]",
+    "[1, 2]",
+    "[1, 2, 3]",
+    "[3]"
+   ],
+   "answer": 0,
+   "explanation": "A slice starting at index 1 returns the rest."
+  },
+  {
+   "chapter": 5,
+   "question": "What is the last number printed?",
+   "code": "for i in range(3):\n    print(i)",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "0"
+   ],
+   "answer": 1,
+   "explanation": "range(3) ends at 2."
+  },
+  {
+   "chapter": 5,
+   "question": "Which keyword exits a loop immediately?",
+   "code": "",
+   "options": [
+    "stop",
+    "exit",
+    "break",
+    "return"
+   ],
+   "answer": 2,
+   "explanation": "break leaves the nearest loop."
+  },
+  {
+   "chapter": 5,
+   "question": "What does this print?",
+   "code": "n = 0\nwhile n < 3:\n    n += 1\nprint(n)",
+   "options": [
+    "2",
+    "3",
+    "4",
+    "0"
+   ],
+   "answer": 1,
+   "explanation": "The loop increments n until it reaches 3."
+  },
+  {
+   "chapter": 6,
+   "question": "Which keyword defines a function?",
+   "code": "",
+   "options": [
+    "func",
+    "def",
+    "function",
+    "lambda only"
+   ],
+   "answer": 1,
+   "explanation": "Functions are defined with def."
+  },
+  {
+   "chapter": 6,
+   "question": "What does this print?",
+   "code": "def f(a, b=1):\n    return a + b\n\nprint(f(2))",
+   "options": [
+    "2",
+    "3",
+    "1",
+    "Error"
+   ],
+   "answer": 1,
+   "explanation": "b defaults to 1, so f(2) is 3."
+  }
+ ],
+ "examples": [
+  {
+   "id": "hello_world",
+   "title": "Hello, World",
+   "description": "The classic first program.",
+   "code": "# Hello World\nprint(\"Hello, World!\")\nprint(\"Python is fun\")\n"
+  },
+  {
+   "id": "variables_math",
+   "title": "Variables and Math",
+   "description": "Store values and calculate.",
+   "code": "price = 4.5\ncount = 3\ntotal = price * count\nprint(\"Total:\", total)\nprint(\"Rounded:\", round(total))\n"
+  },
+  {
+   "id": "string_tricks",
+   "title": "String Tricks",
+   "description": "Slicing, methods and f-strings.",
+   "code": "text = \"learn python\"\nprint(text.upper())\nprint(text.title())\nprint(text[::-1])\nprint(f\"Length: {len(text)}\")\n"
+  },
+  {
+   "id": "list_basics",
+   "title": "List Basics",
+   "description": "Create and change lists.",
+   "code": "items = [4, 8, 15, 16]\nitems.append(23)\nitems.append(42)\nprint(items)\nprint(\"Sum:\", sum(items))\nprint(\"Largest:\", max(items))\n"
+  },
+  {
+   "id": "loops_range",
+   "title": "Loops with range",
+   "description": "Count with a for loop.",
+   "code": "for i in range(1, 6):\n    print(i, \"squared is\", i * i)\n"
+  },
+  {
+   "id": "fizzbuzz",
+   "title": "FizzBuzz",
+   "description": "A classic interview exercise.",
+   "code": "for n in range(1, 21):\n    if n % 15 == 0:\n        print(\"FizzBuzz\")\n    elif n % 3 == 0:\n        print(\"Fizz\")\n    elif n % 5 == 0:\n        print(\"Buzz\")\n    else:\n        print(n)\n"
+  },
+  {
+   "id": "functions",
+   "title": "Functions",
+   "description": "Define and call functions.",
+   "code": "def area(width, height=1):\n    return width * height\n\nprint(area(3, 4))\nprint(area(5))\n"
+  },
+  {
+   "id": "dict_counter",
+   "title": "Dictionary Counter",
+   "description": "Count letters with a dict.",
+   "code": "word = \"mississippi\"\ncounts = {}\nfor letter in word:\n    counts[letter] = counts.get(letter, 0) + 1\nfor letter, number in sorted(counts.items()):\n    print(letter, number)\n"
+  },
+  {
+   "id": "fibonacci",
+   "title": "Fibonacci",
+   "description": "Generate the Fibonacci sequence.",
+   "code": "a, b = 0, 1\nresult = []\nfor _ in range(10):\n    result.append(a)\n    a, b = b, a + b\nprint(result)\n"
+  },
+  {
+   "id": "stdin_echo",
+   "title": "Read from Input",
+   "description": "Type text into the stdin bar before running.",
+   "code": "name = input()\nprint(f\"Hello, {name or 'stranger'}!\")\n"
+  }
+ ],
+ "challenges": [
+  {
+   "id": "hello",
+   "title": "Say Hello",
+   "prompt": "Print exactly: Hello, World!",
+   "starter": "# Print the greeting below\n",
+   "expected": "Hello, World!",
+   "stdin": ""
+  },
+  {
+   "id": "sum_ten",
+   "title": "Sum to Ten",
+   "prompt": "Print the sum of the numbers from 1 to 10.",
+   "starter": "# Add up 1 through 10 and print the total\n",
+   "expected": "55",
+   "stdin": ""
+  },
+  {
+   "id": "evens",
+   "title": "Even Numbers",
+   "prompt": "Print the even numbers from 2 to 10 on one line, separated by spaces.",
+   "starter": "# Print: 2 4 6 8 10\n",
+   "expected": "2 4 6 8 10",
+   "stdin": ""
+  },
+  {
+   "id": "reverse",
+   "title": "Reverse a Word",
+   "prompt": "Reverse the string stored in word and print it.",
+   "starter": "word = \"stressed\"\n# Print the reversed word\n",
+   "expected": "desserts",
+   "stdin": ""
+  },
+  {
+   "id": "factorial",
+   "title": "Factorial",
+   "prompt": "Write a function factorial(n) and print factorial(5).",
+   "starter": "def factorial(n):\n    # Return n multiplied by every smaller positive integer\n    return 1\n\nprint(factorial(5))\n",
+   "expected": "120",
+   "stdin": ""
+  },
+  {
+   "id": "fizzbuzz",
+   "title": "FizzBuzz to 15",
+   "prompt": "For 1 to 15 print Fizz for multiples of 3, Buzz for multiples of 5, FizzBuzz for both, otherwise the number.",
+   "starter": "# One result per line\n",
+   "expected": "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz",
+   "stdin": ""
+  }
+ ]
+}

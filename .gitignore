@@ -1,0 +1,29 @@
+# Gradle / Android build output
+.gradle/
+build/
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+bin/
+gen/
+out/
+
+# IDE
+.idea/
+*.iml
+.DS_Store
+.vscode/
+
+# Packaging output
+CodeLearnDuo.zip
+
+# Keep these tracked
+!.github/
+!gradle/
+!app/src/

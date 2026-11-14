@@ -1,0 +1,941 @@
+{
+ "id": "kotlin_basics",
+ "title": "Kotlin Basics",
+ "language": "kotlin",
+ "description": "Modern Kotlin: variables, null safety, collections and data classes.",
+ "chapters": [
+  {
+   "number": 1,
+   "section": "FOUNDATIONS",
+   "title": "Meet Kotlin",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Why Kotlin?",
+     "body": "Kotlin is a modern, **concise** and **safe** language. It is the preferred language for **Android** and also runs on the **JVM**, on servers and in multiplatform projects.\n\nIt fully interoperates with Java."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "The main function",
+     "body": "Every Kotlin program starts at **fun main()**. Statements go inside curly braces, and **println()** prints a line of text.\n\nSemicolons are optional, so most lines have none."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Hello, Kotlin",
+     "code": "fun main() {\n    println(\"Hello, Kotlin!\")\n    print(\"No newline \")\n    println(\"here\")\n}",
+     "notes": [
+      {
+       "line": 1,
+       "text": "fun declares a function, and main is the entry point."
+      },
+      {
+       "line": 2,
+       "text": "println prints text and moves to a new line."
+      },
+      {
+       "line": 3,
+       "text": "print does not add a newline."
+      },
+      {
+       "line": 4,
+       "text": "This text continues the previous line."
+      }
+     ],
+     "output": "Hello, Kotlin!\nNo newline here"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Arithmetic",
+     "code": "fun main() {\n    println(2 + 3 * 4)\n    println(10 / 4)\n    println(10 / 4.0)\n    println(10 % 4)\n}",
+     "notes": [
+      {
+       "line": 2,
+       "text": "Multiplication binds tighter than addition."
+      },
+      {
+       "line": 3,
+       "text": "Dividing two Ints gives an Int, so the fraction is dropped."
+      },
+      {
+       "line": 4,
+       "text": "If one side is a Double, the result is a Double."
+      },
+      {
+       "line": 5,
+       "text": "% gives the remainder."
+      }
+     ],
+     "output": "14\n2\n2.5\n2"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does println(7 / 2) display in Kotlin?",
+     "code": "",
+     "options": [
+      "3.5",
+      "3",
+      "4",
+      "Error"
+     ],
+     "answer": 1,
+     "explanation": "Int division drops the fraction, so the result is 3."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "Which declaration is the entry point of a Kotlin program?",
+     "code": "",
+     "options": [
+      "fun main()",
+      "def main()",
+      "void start()",
+      "program main"
+     ],
+     "answer": 0,
+     "explanation": "Kotlin programs start at fun main()."
+    }
+   ]
+  },
+  {
+   "number": 2,
+   "section": "FOUNDATIONS",
+   "title": "Variables: val & var",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "val and var",
+     "body": "Use **val** for values that never change (read-only) and **var** for variables you can reassign. Prefer **val** by default; it makes code easier to reason about."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "Type inference and templates",
+     "body": "Kotlin **infers** types from the value: 42 is an Int and \"hi\" is a String. You can also write types explicitly, like **val pi: Double = 3.14**.\n\nString **templates** embed values using **$name** or **${expression}**."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "val and var in action",
+     "code": "fun main() {\n    val language = \"Kotlin\"\n    var version = 2\n    version = version + 1\n    println(\"$language $version\")\n}",
+     "notes": [
+      {
+       "line": 2,
+       "text": "val cannot be reassigned."
+      },
+      {
+       "line": 3,
+       "text": "var can change later."
+      },
+      {
+       "line": 4,
+       "text": "We update version to 3."
+      },
+      {
+       "line": 5,
+       "text": "A template inserts both values into the string."
+      }
+     ],
+     "output": "Kotlin 3"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Templates and types",
+     "code": "fun main() {\n    val a = 6\n    val b = 4\n    println(\"Sum: ${a + b}\")\n    println(\"Product: ${a * b}\")\n    val pi: Double = 3.14\n    println(pi)\n}",
+     "notes": [
+      {
+       "line": 4,
+       "text": "${ } evaluates any expression inside a string."
+      },
+      {
+       "line": 5,
+       "text": "The product of 6 and 4 is 24."
+      },
+      {
+       "line": 6,
+       "text": "An explicit type is optional but allowed."
+      }
+     ],
+     "output": "Sum: 10\nProduct: 24\n3.14"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "Which keyword declares a read-only variable?",
+     "code": "",
+     "options": [
+      "var",
+      "val",
+      "let",
+      "const var"
+     ],
+     "answer": 1,
+     "explanation": "val creates a read-only reference."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What happens with this code?",
+     "code": "fun main() {\n    val x = 5\n    x = 6\n    println(x)\n}",
+     "options": [
+      "Prints 6",
+      "Prints 5",
+      "Compile error",
+      "Runtime error"
+     ],
+     "answer": 2,
+     "explanation": "A val cannot be reassigned, so the compiler rejects the second line."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does this print?",
+     "code": "fun main() {\n    val name = \"Sam\"\n    println(\"Hi $name\")\n}",
+     "options": [
+      "Hi $name",
+      "Hi Sam",
+      "Hi name",
+      "Error"
+     ],
+     "answer": 1,
+     "explanation": "The template inserts the value of name."
+    }
+   ]
+  },
+  {
+   "number": 3,
+   "section": "FOUNDATIONS",
+   "title": "Null Safety & Types",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Nullable types",
+     "body": "By default a type **cannot** hold null. Add a question mark, as in **String?**, to allow it. The compiler forces you to handle null before using the value, which removes a whole class of crashes."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "Safe calls and elvis",
+     "body": "The **safe call ?.** only continues when the value is not null. The **elvis operator ?:** supplies a fallback.\n\nThe **!!** operator asserts non-null and throws if you are wrong, so use it rarely."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Safe calls",
+     "code": "fun main() {\n    var name: String? = \"Kotlin\"\n    println(name?.length)\n    name = null\n    println(name?.length)\n    println(name ?: \"unknown\")\n}",
+     "notes": [
+      {
+       "line": 2,
+       "text": "The ? makes the type nullable."
+      },
+      {
+       "line": 3,
+       "text": "name is not null, so length is 6."
+      },
+      {
+       "line": 5,
+       "text": "The safe call returns null instead of crashing."
+      },
+      {
+       "line": 6,
+       "text": "Elvis supplies a default when the left side is null."
+      }
+     ],
+     "output": "6\nnull\nunknown"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Conversions that may fail",
+     "code": "fun main() {\n    val text: String? = null\n    val size = text?.length ?: 0\n    println(size)\n    val num = \"42\".toIntOrNull()\n    val bad = \"abc\".toIntOrNull()\n    println(num)\n    println(bad)\n}",
+     "notes": [
+      {
+       "line": 3,
+       "text": "Combine ?. and ?: to get a safe default."
+      },
+      {
+       "line": 5,
+       "text": "toIntOrNull returns an Int? instead of throwing."
+      },
+      {
+       "line": 6,
+       "text": "Text that is not a number gives null."
+      }
+     ],
+     "output": "0\n42\nnull"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "Which type can hold null?",
+     "code": "",
+     "options": [
+      "String",
+      "Int",
+      "String?",
+      "Boolean"
+     ],
+     "answer": 2,
+     "explanation": "A trailing question mark makes a type nullable."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does this print?",
+     "code": "fun main() {\n    val s: String? = null\n    println(s ?: \"none\")\n}",
+     "options": [
+      "null",
+      "none",
+      "Error",
+      "s"
+     ],
+     "answer": 1,
+     "explanation": "s is null, so the elvis operator returns the fallback."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does the !! operator do?",
+     "code": "",
+     "options": [
+      "Safely skips null",
+      "Throws if the value is null",
+      "Converts to String",
+      "Negates a Boolean"
+     ],
+     "answer": 1,
+     "explanation": "!! throws a NullPointerException when the value is null."
+    }
+   ]
+  },
+  {
+   "number": 4,
+   "section": "DATA & FLOW",
+   "title": "Control Flow & when",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "if is an expression",
+     "body": "In Kotlin **if** returns a value, so you can write **val x = if (a > b) a else b**. There is no ternary operator because if already does the job."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "when and ranges",
+     "body": "**when** replaces long if-else chains. Branches can match values, several values, ranges and types.\n\nRanges like **1..5** include both ends, while **1 until 5** excludes the end. Use **for** and **while** for loops."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "if as an expression",
+     "code": "fun main() {\n    val score = 85\n    val grade = if (score >= 90) \"A\" else if (score >= 80) \"B\" else \"C\"\n    println(grade)\n}",
+     "notes": [
+      {
+       "line": 2,
+       "text": "score is 85."
+      },
+      {
+       "line": 3,
+       "text": "The whole if chain produces a String stored in grade."
+      }
+     ],
+     "output": "B"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "when expression",
+     "code": "fun main() {\n    for (day in 1..4) {\n        val name = when (day) {\n            1 -> \"Mon\"\n            2, 3 -> \"Midweek\"\n            else -> \"Other\"\n        }\n        println(\"$day $name\")\n    }\n}",
+     "notes": [
+      {
+       "line": 2,
+       "text": "1..4 includes 4."
+      },
+      {
+       "line": 3,
+       "text": "when returns a value from the matching branch."
+      },
+      {
+       "line": 5,
+       "text": "Several values can share one branch."
+      },
+      {
+       "line": 6,
+       "text": "else handles everything else."
+      }
+     ],
+     "output": "1 Mon\n2 Midweek\n3 Midweek\n4 Other"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Loops",
+     "code": "fun main() {\n    for (i in 1..3) println(i)\n    for (i in 10 downTo 8) println(i)\n    var n = 0\n    while (n < 2) n++\n    println(n)\n}",
+     "notes": [
+      {
+       "line": 2,
+       "text": "A for loop over a closed range."
+      },
+      {
+       "line": 3,
+       "text": "downTo counts backwards."
+      },
+      {
+       "line": 5,
+       "text": "while repeats until the condition is false."
+      }
+     ],
+     "output": "1\n2\n3\n10\n9\n8\n2"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "How many times does for (i in 1 until 4) run?",
+     "code": "",
+     "options": [
+      "3",
+      "4",
+      "5",
+      "1"
+     ],
+     "answer": 0,
+     "explanation": "until excludes the end value, so i is 1, 2 and 3."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does when return when used as an expression?",
+     "code": "",
+     "options": [
+      "Always Unit",
+      "The value of the matching branch",
+      "The first branch",
+      "Nothing"
+     ],
+     "answer": 1,
+     "explanation": "As an expression, when evaluates to the matching branch value and must be exhaustive."
+    }
+   ]
+  },
+  {
+   "number": 5,
+   "section": "DATA & FLOW",
+   "title": "Collections",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Lists, sets and maps",
+     "body": "Kotlin has **List**, **Set** and **Map**. Create read-only versions with **listOf**, **setOf** and **mapOf**, and changeable ones with **mutableListOf** and friends.\n\nMaps are written with **key to value** pairs."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "Functional helpers",
+     "body": "Collections have powerful helpers: **map** transforms every item, **filter** keeps matches, **sum**, **sorted**, **any** and **all** summarize them.\n\nIn a lambda the single parameter is called **it**."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Working with a list",
+     "code": "fun main() {\n    val nums = listOf(3, 1, 2)\n    println(nums.size)\n    println(nums.sorted())\n    println(nums.map { it * 2 })\n}",
+     "notes": [
+      {
+       "line": 2,
+       "text": "listOf creates a read-only list."
+      },
+      {
+       "line": 4,
+       "text": "sorted returns a new ordered list."
+      },
+      {
+       "line": 5,
+       "text": "map applies the lambda to each item."
+      }
+     ],
+     "output": "3\n[1, 2, 3]\n[6, 2, 4]"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Mutable lists and maps",
+     "code": "fun main() {\n    val items = mutableListOf(\"a\", \"b\")\n    items.add(\"c\")\n    println(items)\n    val ages = mapOf(\"Ann\" to 30, \"Bob\" to 25)\n    println(ages[\"Ann\"])\n    println(ages[\"Zed\"])\n}",
+     "notes": [
+      {
+       "line": 2,
+       "text": "A mutable list can grow."
+      },
+      {
+       "line": 3,
+       "text": "add appends at the end."
+      },
+      {
+       "line": 5,
+       "text": "to builds key-value pairs."
+      },
+      {
+       "line": 7,
+       "text": "A missing key gives null."
+      }
+     ],
+     "output": "[a, b, c]\n30\nnull"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "filter and sum",
+     "code": "fun main() {\n    val nums = listOf(1, 2, 3, 4, 5, 6)\n    val evens = nums.filter { it % 2 == 0 }\n    println(evens)\n    println(evens.sum())\n    println(nums.any { it > 5 })\n}",
+     "notes": [
+      {
+       "line": 3,
+       "text": "filter keeps items where the lambda is true."
+      },
+      {
+       "line": 5,
+       "text": "sum adds the remaining numbers."
+      },
+      {
+       "line": 6,
+       "text": "any checks whether at least one item matches."
+      }
+     ],
+     "output": "[2, 4, 6]\n12\ntrue"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does listOf(1, 2, 3).map { it + 1 } produce?",
+     "code": "",
+     "options": [
+      "[1, 2, 3]",
+      "[2, 3, 4]",
+      "[3, 4, 5]",
+      "6"
+     ],
+     "answer": 1,
+     "explanation": "map adds 1 to every item."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "Which function creates a list you can add items to?",
+     "code": "",
+     "options": [
+      "listOf",
+      "mutableListOf",
+      "arrayOf",
+      "setOf"
+     ],
+     "answer": 1,
+     "explanation": "mutableListOf returns a MutableList."
+    }
+   ]
+  },
+  {
+   "number": 6,
+   "section": "STRUCTURE",
+   "title": "Functions & Data Classes",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Declaring functions",
+     "body": "Use **fun**, a name, typed parameters and a return type. A single expression can use **=** instead of braces.\n\nParameters can have **default values** and be passed by **name**."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "Data classes",
+     "body": "A **data class** is a compact holder for data. The compiler writes **toString**, **equals**, **hashCode** and **copy** for you.\n\nProperties are declared in the constructor with **val** or **var**."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Functions",
+     "code": "fun square(x: Int): Int = x * x\n\nfun greet(name: String, greeting: String = \"Hello\"): String {\n    return \"$greeting, $name!\"\n}\n\nfun main() {\n    println(square(5))\n    println(greet(\"Ada\"))\n    println(greet(\"Linus\", \"Hi\"))\n}",
+     "notes": [
+      {
+       "line": 1,
+       "text": "An expression-bodied function."
+      },
+      {
+       "line": 3,
+       "text": "greeting has a default value."
+      },
+      {
+       "line": 8,
+       "text": "5 squared is 25."
+      },
+      {
+       "line": 9,
+       "text": "Uses the default greeting."
+      },
+      {
+       "line": 10,
+       "text": "Positional argument overrides the default."
+      }
+     ],
+     "output": "25\nHello, Ada!\nHi, Linus!"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Data classes",
+     "code": "data class User(val name: String, val age: Int)\n\nfun main() {\n    val u = User(\"Ada\", 36)\n    println(u)\n    val older = u.copy(age = 37)\n    println(older.age)\n    println(u == User(\"Ada\", 36))\n}",
+     "notes": [
+      {
+       "line": 1,
+       "text": "One line declares the class and its properties."
+      },
+      {
+       "line": 5,
+       "text": "toString is generated automatically."
+      },
+      {
+       "line": 6,
+       "text": "copy creates a changed duplicate."
+      },
+      {
+       "line": 8,
+       "text": "equals compares property values."
+      }
+     ],
+     "output": "User(name=Ada, age=36)\n37\ntrue"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does a data class generate automatically?",
+     "code": "",
+     "options": [
+      "Only getters",
+      "toString, equals, hashCode and copy",
+      "A database table",
+      "Nothing"
+     ],
+     "answer": 1,
+     "explanation": "Data classes get toString, equals, hashCode, copy and componentN functions."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does this print?",
+     "code": "fun add(a: Int, b: Int) = a + b\n\nfun main() {\n    println(add(2, 3))\n}",
+     "options": [
+      "5",
+      "23",
+      "Error",
+      "2 + 3"
+     ],
+     "answer": 0,
+     "explanation": "The function returns the sum of its arguments."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What is the main benefit of a default parameter value?",
+     "code": "",
+     "options": [
+      "The argument can be omitted",
+      "The function runs faster",
+      "The parameter becomes val",
+      "It makes the function private"
+     ],
+     "answer": 0,
+     "explanation": "Callers may leave out arguments that have defaults."
+    }
+   ]
+  }
+ ],
+ "quiz": [
+  {
+   "chapter": 1,
+   "question": "Which function is the entry point of a Kotlin program?",
+   "code": "",
+   "options": [
+    "fun start()",
+    "fun main()",
+    "fun run()",
+    "fun init()"
+   ],
+   "answer": 1,
+   "explanation": "Execution begins in main."
+  },
+  {
+   "chapter": 1,
+   "question": "What does println(9 / 2) print?",
+   "code": "fun main() {\n    println(9 / 2)\n}",
+   "options": [
+    "4.5",
+    "4",
+    "5",
+    "Error"
+   ],
+   "answer": 1,
+   "explanation": "Int division drops the fraction."
+  },
+  {
+   "chapter": 1,
+   "question": "Kotlin code commonly runs on the:",
+   "code": "",
+   "options": [
+    "JVM",
+    "CLR only",
+    "Browser only",
+    "GPU"
+   ],
+   "answer": 0,
+   "explanation": "Kotlin/JVM is the most common target."
+  },
+  {
+   "chapter": 2,
+   "question": "Which keyword declares a read-only variable?",
+   "code": "",
+   "options": [
+    "var",
+    "val",
+    "def",
+    "let"
+   ],
+   "answer": 1,
+   "explanation": "val is read-only."
+  },
+  {
+   "chapter": 2,
+   "question": "What does this print?",
+   "code": "fun main() {\n    val x = 3\n    println(\"x=$x\")\n}",
+   "options": [
+    "x=$x",
+    "x=3",
+    "3",
+    "Error"
+   ],
+   "answer": 1,
+   "explanation": "The template inserts the value."
+  },
+  {
+   "chapter": 3,
+   "question": "What does this print?",
+   "code": "fun main() {\n    val s: String? = null\n    println(s?.length)\n}",
+   "options": [
+    "0",
+    "null",
+    "Error",
+    "Kotlin"
+   ],
+   "answer": 1,
+   "explanation": "The safe call on null returns null."
+  },
+  {
+   "chapter": 3,
+   "question": "The elvis operator is written:",
+   "code": "",
+   "options": [
+    "?:",
+    "??",
+    "!!",
+    "?."
+   ],
+   "answer": 0,
+   "explanation": "?: supplies a default for null."
+  },
+  {
+   "chapter": 3,
+   "question": "Which type is non-nullable?",
+   "code": "",
+   "options": [
+    "Int?",
+    "String?",
+    "Int",
+    "Any?"
+   ],
+   "answer": 2,
+   "explanation": "Types without ? cannot hold null."
+  },
+  {
+   "chapter": 4,
+   "question": "What does this print?",
+   "code": "fun main() {\n    val n = 3\n    println(if (n > 2) \"big\" else \"small\")\n}",
+   "options": [
+    "big",
+    "small",
+    "true",
+    "Error"
+   ],
+   "answer": 0,
+   "explanation": "3 is greater than 2."
+  },
+  {
+   "chapter": 4,
+   "question": "What does this print?",
+   "code": "fun main() {\n    for (i in 1..3) print(i)\n}",
+   "options": [
+    "123",
+    "321",
+    "12",
+    "1 2 3"
+   ],
+   "answer": 0,
+   "explanation": "print does not add newlines."
+  },
+  {
+   "chapter": 4,
+   "question": "Which Kotlin construct is similar to switch in other languages?",
+   "code": "",
+   "options": [
+    "when",
+    "match",
+    "select",
+    "case"
+   ],
+   "answer": 0,
+   "explanation": "when is Kotlin's flexible switch."
+  },
+  {
+   "chapter": 5,
+   "question": "What does this print?",
+   "code": "fun main() {\n    println(listOf(1, 2, 3).sum())\n}",
+   "options": [
+    "6",
+    "3",
+    "123",
+    "Error"
+   ],
+   "answer": 0,
+   "explanation": "sum adds the elements."
+  },
+  {
+   "chapter": 5,
+   "question": "What does this print?",
+   "code": "fun main() {\n    println(mapOf(\"a\" to 1)[\"b\"])\n}",
+   "options": [
+    "0",
+    "1",
+    "null",
+    "Error"
+   ],
+   "answer": 2,
+   "explanation": "A missing key returns null."
+  },
+  {
+   "chapter": 6,
+   "question": "What does this print?",
+   "code": "fun f(x: Int) = x + 1\n\nfun main() {\n    println(f(f(1)))\n}",
+   "options": [
+    "2",
+    "3",
+    "1",
+    "Error"
+   ],
+   "answer": 1,
+   "explanation": "f(f(1)) is f(2), which is 3."
+  },
+  {
+   "chapter": 6,
+   "question": "What does this print?",
+   "code": "data class P(val x: Int)\n\nfun main() {\n    println(P(1) == P(1))\n}",
+   "options": [
+    "true",
+    "false",
+    "Error",
+    "P(x=1)"
+   ],
+   "answer": 0,
+   "explanation": "Data classes compare by value."
+  }
+ ],
+ "examples": [
+  {
+   "id": "hello_world",
+   "title": "Hello, World",
+   "description": "The classic first program.",
+   "code": "fun main() {\n    println(\"Hello, World!\")\n    println(\"Kotlin is fun\")\n}\n"
+  },
+  {
+   "id": "variables",
+   "title": "Variables",
+   "description": "val and var in action.",
+   "code": "fun main() {\n    val price = 4.5\n    var count = 3\n    count += 1\n    println(\"Total: ${price * count}\")\n}\n"
+  },
+  {
+   "id": "string_templates",
+   "title": "String Templates",
+   "description": "Embed values in text.",
+   "code": "fun main() {\n    val name = \"Kotlin\"\n    println(\"Hello, $name!\")\n    println(\"Length: ${name.length}\")\n    println(name.uppercase())\n    println(name.reversed())\n}\n"
+  },
+  {
+   "id": "null_safety",
+   "title": "Null Safety",
+   "description": "Safe calls and elvis.",
+   "code": "fun main() {\n    val maybe: String? = null\n    println(maybe?.length)\n    println(maybe ?: \"nothing here\")\n    val parsed = \"123\".toIntOrNull()\n    println(parsed)\n}\n"
+  },
+  {
+   "id": "when_expr",
+   "title": "when Expression",
+   "description": "Branch on a value.",
+   "code": "fun main() {\n    for (n in 1..5) {\n        val text = when {\n            n % 2 == 0 -> \"even\"\n            else -> \"odd\"\n        }\n        println(\"$n is $text\")\n    }\n}\n"
+  },
+  {
+   "id": "loops",
+   "title": "Loops",
+   "description": "for, while and ranges.",
+   "code": "fun main() {\n    for (i in 1..5) print(\"$i \")\n    println()\n    var n = 3\n    while (n > 0) {\n        println(\"Countdown $n\")\n        n--\n    }\n}\n"
+  },
+  {
+   "id": "lists_maps",
+   "title": "Lists and Maps",
+   "description": "Collections at work.",
+   "code": "fun main() {\n    val nums = listOf(5, 3, 8, 1)\n    println(nums.sorted())\n    println(nums.filter { it > 2 })\n    val ages = mapOf(\"Ann\" to 30, \"Bob\" to 25)\n    for ((name, age) in ages) println(\"$name is $age\")\n}\n"
+  },
+  {
+   "id": "functions",
+   "title": "Functions",
+   "description": "Parameters and defaults.",
+   "code": "fun area(width: Int, height: Int = 1): Int = width * height\n\nfun main() {\n    println(area(3, 4))\n    println(area(5))\n}\n"
+  },
+  {
+   "id": "data_class",
+   "title": "Data Class",
+   "description": "Compact data holders.",
+   "code": "data class Point(val x: Int, val y: Int)\n\nfun main() {\n    val p = Point(1, 2)\n    println(p)\n    println(p.copy(y = 5))\n    println(p == Point(1, 2))\n}\n"
+  },
+  {
+   "id": "fibonacci",
+   "title": "Fibonacci",
+   "description": "Build the sequence.",
+   "code": "fun main() {\n    var a = 0\n    var b = 1\n    val result = mutableListOf<Int>()\n    repeat(10) {\n        result.add(a)\n        val next = a + b\n        a = b\n        b = next\n    }\n    println(result)\n}\n"
+  }
+ ],
+ "challenges": [
+  {
+   "id": "hello",
+   "title": "Say Hello",
+   "prompt": "Print exactly: Hello, Kotlin!",
+   "starter": "fun main() {\n    // Write your solution below\n}\n",
+   "expected": "Hello, Kotlin!",
+   "stdin": ""
+  },
+  {
+   "id": "sum_ten",
+   "title": "Sum to Ten",
+   "prompt": "Print the sum of the numbers from 1 to 10.",
+   "starter": "fun main() {\n    // Write your solution below\n}\n",
+   "expected": "55",
+   "stdin": ""
+  },
+  {
+   "id": "evens",
+   "title": "Even Numbers",
+   "prompt": "Print the even numbers from 2 to 10 on one line, separated by spaces.",
+   "starter": "fun main() {\n    // Write your solution below\n}\n",
+   "expected": "2 4 6 8 10",
+   "stdin": ""
+  },
+  {
+   "id": "reverse",
+   "title": "Reverse a Word",
+   "prompt": "Reverse the word \"stressed\" and print it.",
+   "starter": "fun main() {\n    val word = \"stressed\"\n    // Print the reversed word\n}\n",
+   "expected": "desserts",
+   "stdin": ""
+  },
+  {
+   "id": "factorial",
+   "title": "Factorial",
+   "prompt": "Write a function factorial(n) and print factorial(5).",
+   "starter": "fun factorial(n: Int): Int {\n    // Multiply every integer from 1 to n\n    return 1\n}\n\nfun main() {\n    println(factorial(5))\n}\n",
+   "expected": "120",
+   "stdin": ""
+  },
+  {
+   "id": "fizzbuzz",
+   "title": "FizzBuzz to 15",
+   "prompt": "For 1 to 15 print Fizz for multiples of 3, Buzz for multiples of 5, FizzBuzz for both, otherwise the number.",
+   "starter": "fun main() {\n    // One result per line\n}\n",
+   "expected": "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz",
+   "stdin": ""
+  }
+ ]
+}
