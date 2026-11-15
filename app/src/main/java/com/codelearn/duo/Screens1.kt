@@ -25,6 +25,7 @@ import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.*
@@ -122,6 +123,32 @@ fun OutputBlock(text: String, modifier: Modifier = Modifier, label: String = "Ou
         Text(label, color = Pal.muted, fontSize = 12.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(4.dp))
         Text(text.ifEmpty { " " }, color = color, fontFamily = FontFamily.Monospace, fontSize = 13.sp)
+    }
+}
+
+@Composable
+fun OutputImages(images: List<String>, modifier: Modifier = Modifier) {
+    if (images.isEmpty()) return
+    val bitmaps = remember(images) {
+        images.mapNotNull { b64 ->
+            try {
+                val bytes = android.util.Base64.decode(b64, android.util.Base64.DEFAULT)
+                android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size)?.asImageBitmap()
+            } catch (e: Exception) {
+                null
+            }
+        }
+    }
+    Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        bitmaps.forEach { bmp ->
+            Image(
+                bitmap = bmp,
+                contentDescription = "Output image",
+                contentScale = ContentScale.Fit,
+                filterQuality = if (bmp.width < 200) FilterQuality.None else FilterQuality.Medium,
+                modifier = Modifier.fillMaxWidth().heightIn(max = 420.dp).clip(RoundedCornerShape(8.dp))
+            )
+        }
     }
 }
 

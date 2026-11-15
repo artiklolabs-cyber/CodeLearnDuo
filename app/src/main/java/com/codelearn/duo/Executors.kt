@@ -23,7 +23,8 @@ data class ExecutionResult(
     val stdout: String,
     val errorOutput: String,
     val elapsedTime: Long,
-    val statusDescription: String
+    val statusDescription: String,
+    val images: List<String> = emptyList()
 )
 
 object PythonExecutor {
@@ -41,7 +42,9 @@ object PythonExecutor {
                     .callAttr("run_user_code", code, stdin).toString()
                 val j = JSONObject(raw)
                 val ok = j.optBoolean("success")
-                ExecutionResult(ok, j.optString("stdout"), j.optString("stderr"), j.optLong("elapsedMs"), if (ok) "Finished" else "Error")
+                val imgArr = j.optJSONArray("images")
+                val images = if (imgArr == null) emptyList() else (0 until imgArr.length()).map { imgArr.getString(it) }
+                ExecutionResult(ok, j.optString("stdout"), j.optString("stderr"), j.optLong("elapsedMs"), if (ok) "Finished" else "Error", images)
             }
         } catch (t: Throwable) {
             ExecutionResult(false, "", "Python execution failed: ${t.message}", System.currentTimeMillis() - started, "Error")

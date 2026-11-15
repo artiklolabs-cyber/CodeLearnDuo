@@ -1,0 +1,235 @@
+{
+ "id": "python_numpy",
+ "course": "python_basics",
+ "order": 20,
+ "chapters": [
+  {
+   "number": 13,
+   "section": "SCIENTIFIC PYTHON",
+   "title": "NumPy Arrays",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Why NumPy?",
+     "body": "**NumPy** gives Python fast **n-dimensional arrays**. Operations apply to the whole array at once (**vectorized**), so you rarely write loops.\n\nEvery array has a **shape**, a **dtype** and supports slicing like lists but in many dimensions."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Creating, indexing and slicing",
+     "code": "import numpy as np\n\na = np.arange(1, 7).reshape(2, 3)\nprint(a)\nprint(a.shape)\nprint(a[1, 2])\nprint(a[:, 1])",
+     "notes": [
+      {
+       "line": 3,
+       "text": "arange makes 1..6 and reshape turns it into 2 rows by 3 columns."
+      },
+      {
+       "line": 5,
+       "text": "shape is (rows, columns)."
+      },
+      {
+       "line": 6,
+       "text": "a[row, column] reads one element."
+      },
+      {
+       "line": 7,
+       "text": "A colon means all rows; this takes column 1."
+      }
+     ],
+     "output": "[[1 2 3]\n [4 5 6]]\n(2, 3)\n6\n[2 5]"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Broadcasting and vector math",
+     "code": "import numpy as np\n\nv = np.array([1, 2, 3])\nprint(v * 2)\nprint(v + np.array([10, 20, 30]))\nm = np.array([[1, 2, 3], [4, 5, 6]])\nprint(m + v)\nprint(np.dot(v, v))",
+     "notes": [
+      {
+       "line": 4,
+       "text": "A scalar is broadcast to every element."
+      },
+      {
+       "line": 5,
+       "text": "Arrays of the same shape combine element by element."
+      },
+      {
+       "line": 7,
+       "text": "The 1-D vector is stretched across both rows."
+      },
+      {
+       "line": 8,
+       "text": "dot multiplies pairs and adds them: 1+4+9."
+      }
+     ],
+     "output": "[2 4 6]\n[11 22 33]\n[[2 4 6]\n [5 7 9]]\n14"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Linear algebra and statistics",
+     "code": "import numpy as np\n\nA = np.array([[2, 0], [0, 4]])\nprint(round(np.linalg.det(A), 2))\nprint(np.linalg.inv(A))\ndata = np.array([2, 4, 4, 4, 5, 5, 7, 9])\nprint(data.mean(), data.std())\nprint(np.median(data))",
+     "notes": [
+      {
+       "line": 4,
+       "text": "The determinant of a diagonal matrix is the product of its diagonal."
+      },
+      {
+       "line": 5,
+       "text": "inv returns the inverse matrix."
+      },
+      {
+       "line": 7,
+       "text": "mean and std summarize the data."
+      },
+      {
+       "line": 8,
+       "text": "The median is the middle value."
+      }
+     ],
+     "output": "8.0\n[[0.5  0.  ]\n [0.   0.25]]\n5.0 2.0\n4.5"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Solving a linear system",
+     "code": "import numpy as np\n\nA = np.array([[3, 1], [1, 2]])\nb = np.array([9, 8])\nx = np.linalg.solve(A, b)\nprint(x.tolist())\nprint(np.allclose(A @ x, b))",
+     "notes": [
+      {
+       "line": 5,
+       "text": "solve finds x so that A times x equals b."
+      },
+      {
+       "line": 6,
+       "text": "@ is matrix multiplication; allclose checks the result."
+      }
+     ],
+     "output": "[2.0, 3.0]\nTrue"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does np.array([1, 2, 3]) * 2 give?",
+     "code": "",
+     "options": [
+      "[1, 2, 3, 1, 2, 3]",
+      "[2 4 6]",
+      "6",
+      "Error"
+     ],
+     "answer": 1,
+     "explanation": "NumPy multiplies every element, unlike a Python list which repeats."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What is broadcasting?",
+     "code": "",
+     "options": [
+      "Sending arrays over a network",
+      "Stretching smaller arrays to match shapes in an operation",
+      "Printing arrays",
+      "Sorting arrays"
+     ],
+     "answer": 1,
+     "explanation": "Broadcasting lets arrays of different shapes combine without copying data by hand."
+    }
+   ]
+  }
+ ],
+ "quiz": [
+  {
+   "chapter": 13,
+   "question": "What does this print?",
+   "code": "import numpy as np\nprint(np.arange(6).reshape(2, 3).shape)",
+   "options": [
+    "(3, 2)",
+    "(2, 3)",
+    "6",
+    "(6,)"
+   ],
+   "answer": 1,
+   "explanation": "reshape(2, 3) makes 2 rows and 3 columns.",
+   "id": "np1"
+  },
+  {
+   "chapter": 13,
+   "question": "What does this print?",
+   "code": "import numpy as np\na = np.array([[1, 2, 3], [4, 5, 6]])\nprint(a[:, 1])",
+   "options": [
+    "[2 5]",
+    "[1 2 3]",
+    "[3 6]",
+    "[4 5 6]"
+   ],
+   "answer": 0,
+   "explanation": "The slice takes column 1 from every row.",
+   "id": "np2"
+  },
+  {
+   "chapter": 13,
+   "question": "What does this print?",
+   "code": "import numpy as np\nv = np.array([1, 2, 3])\nprint(np.dot(v, v))",
+   "options": [
+    "14",
+    "6",
+    "[1 4 9]",
+    "Error"
+   ],
+   "answer": 0,
+   "explanation": "dot gives 1*1 + 2*2 + 3*3.",
+   "id": "np3"
+  }
+ ],
+ "examples": [
+  {
+   "id": "np_array_creation",
+   "title": "NumPy: Array Creation",
+   "description": "zeros, ones, arange, linspace and eye.",
+   "code": "import numpy as np\n\nprint(np.zeros(3))\nprint(np.ones((2, 2)))\nprint(np.arange(0, 10, 3))\nprint(np.linspace(0, 1, 5))\nprint(np.eye(3))\n"
+  },
+  {
+   "id": "np_indexing_slicing",
+   "title": "NumPy: Indexing & Slicing",
+   "description": "Read elements, rows, columns and masks.",
+   "code": "import numpy as np\n\na = np.arange(1, 13).reshape(3, 4)\nprint(a)\nprint(a[0, 1], a[-1, -1])\nprint(a[1])\nprint(a[:, 2])\nprint(a[1:, :2])\nprint(a[a % 2 == 0])\n"
+  },
+  {
+   "id": "np_broadcasting",
+   "title": "NumPy: Broadcasting",
+   "description": "Combine arrays of different shapes.",
+   "code": "import numpy as np\n\ncol = np.array([[1], [2], [3]])\nrow = np.array([10, 20, 30])\nprint(col + row)\nprint(col * 2)\nprint(row / 10)\n"
+  },
+  {
+   "id": "np_vector_math",
+   "title": "NumPy: Vector Math",
+   "description": "Dot product, norm and cumulative sums.",
+   "code": "import numpy as np\n\na = np.array([1.0, 2.0, 2.0])\nb = np.array([3.0, 0.0, 4.0])\nprint(a + b)\nprint(a * b)\nprint(np.dot(a, b))\nprint(np.linalg.norm(a))\nprint(np.cumsum(a))\nprint(np.sqrt(b))\n"
+  },
+  {
+   "id": "np_linear_algebra",
+   "title": "NumPy: Linear Algebra",
+   "description": "Matrix product, determinant, inverse and solve.",
+   "code": "import numpy as np\n\nA = np.array([[4.0, 3.0], [6.0, 3.0]])\nB = np.array([[1.0, 0.0], [0.0, 2.0]])\nprint(A @ B)\nprint(round(np.linalg.det(A), 2))\nprint(np.linalg.inv(A).round(3))\nprint(np.linalg.solve(A, np.array([10.0, 12.0])))\nprint(A.T)\n"
+  },
+  {
+   "id": "np_statistics",
+   "title": "NumPy: Statistics",
+   "description": "Mean, spread, percentiles and correlation.",
+   "code": "import numpy as np\n\nx = np.array([2, 4, 4, 4, 5, 5, 7, 9])\nprint(x.mean(), x.std(), x.var())\nprint(np.median(x), x.min(), x.max())\nprint(np.percentile(x, [25, 75]))\ny = 2 * x + 1\nprint(round(np.corrcoef(x, y)[0, 1], 3))\n"
+  }
+ ],
+ "challenges": [
+  {
+   "id": "np_sum_squares",
+   "title": "NumPy: Sum of Squares",
+   "prompt": "Using numpy, print the sum of the squares of 1 to 5.",
+   "starter": "import numpy as np\n\nv = np.arange(1, 6)\n# Print the sum of the squares of v\n",
+   "expected": "55",
+   "stdin": ""
+  },
+  {
+   "id": "np_column_means",
+   "title": "NumPy: Column Means",
+   "prompt": "Print the mean of each column of m as a list.",
+   "starter": "import numpy as np\n\nm = np.array([[1, 2, 3], [4, 5, 6]])\n# Print the column means as a list\n",
+   "expected": "[2.5, 3.5, 4.5]",
+   "stdin": ""
+  }
+ ]
+}

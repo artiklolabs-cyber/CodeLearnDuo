@@ -1,0 +1,1237 @@
+{
+ "id": "kotlin_advanced",
+ "course": "kotlin_basics",
+ "order": 10,
+ "chapters": [
+  {
+   "number": 7,
+   "section": "ADVANCED NULL SAFETY & FLOW",
+   "title": "Null Safety Deep Dive",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Safe casts and smart casts",
+     "body": "**as?** is a **safe cast**: it returns the value if the type matches and **null** otherwise, instead of crashing like **as**.\n\nAfter an **is** check, Kotlin **smart casts** the variable, so you can use it as the checked type without writing a cast."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "let, elvis and early exits",
+     "body": "**?.let { }** runs a block only when the value is **not null**. The **?:** operator can also hold **return** or **throw**, which makes guard clauses short: val n = input ?: return."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "as? with safe call and elvis",
+     "code": "fun lengthOrZero(x: Any?): Int = (x as? String)?.length ?: 0\n\nfun main() {\n    println(lengthOrZero(\"kotlin\"))\n    println(lengthOrZero(42))\n    println(lengthOrZero(null))\n}",
+     "notes": [
+      {
+       "line": 1,
+       "text": "as? gives null for non-strings; ?. skips the call; ?: supplies 0."
+      },
+      {
+       "line": 4,
+       "text": "A String passes the cast, so its length is used."
+      },
+      {
+       "line": 5,
+       "text": "An Int fails the safe cast and falls back to 0."
+      },
+      {
+       "line": 6,
+       "text": "null also falls back to 0."
+      }
+     ],
+     "output": "6\n0\n0"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Smart casts with is",
+     "code": "fun size(x: Any): Int {\n    if (x is String) return x.length\n    if (x is List<*>) return x.size\n    return -1\n}\n\nfun main() {\n    println(size(\"hello\"))\n    println(size(listOf(1, 2, 3)))\n    println(size(3.5))\n}",
+     "notes": [
+      {
+       "line": 2,
+       "text": "Inside the if, x is automatically a String."
+      },
+      {
+       "line": 3,
+       "text": "Here x is smart cast to a List."
+      },
+      {
+       "line": 4,
+       "text": "Anything else returns -1."
+      }
+     ],
+     "output": "5\n3\n-1"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "let for non-null work",
+     "code": "fun main() {\n    val name: String? = \"Ada\"\n    name?.let { println(\"Hello, $it\") }\n    val missing: String? = null\n    missing?.let { println(\"never printed\") }\n    val len = missing?.length ?: -1\n    println(len)\n}",
+     "notes": [
+      {
+       "line": 3,
+       "text": "The block runs because name is not null; it is the block parameter."
+      },
+      {
+       "line": 5,
+       "text": "The block is skipped when the value is null."
+      },
+      {
+       "line": 6,
+       "text": "Safe call plus elvis gives a default."
+      }
+     ],
+     "output": "Hello, Ada\n-1"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does as? return when the cast is impossible?",
+     "code": "",
+     "options": [
+      "It throws an exception",
+      "null",
+      "The original value",
+      "false"
+     ],
+     "answer": 1,
+     "explanation": "The safe cast operator yields null instead of throwing."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does this print?",
+     "code": "fun main() {\n    val x: Any = \"hi\"\n    val n = x as? Int\n    println(n)\n}",
+     "options": [
+      "null",
+      "hi",
+      "Error",
+      "0"
+     ],
+     "answer": 0,
+     "explanation": "The String cannot be cast to Int, so as? gives null."
+    }
+   ]
+  },
+  {
+   "number": 8,
+   "section": "ADVANCED NULL SAFETY & FLOW",
+   "title": "Ranges, when & val/var",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Ranges",
+     "body": "**1..5** is a closed range, **1 until 5** excludes the end, **10 downTo 1** counts down and **step** changes the stride. Use **in** and **!in** to test membership, even for characters like 'a'..'e'."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "when and immutability",
+     "body": "**when** can match values, ranges (**in**), types (**is**) or arbitrary conditions with no subject. It is an expression, so every case must produce a value.\n\n**val** fixes the reference, but a **MutableList** held in a val can still change its contents."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Range tools",
+     "code": "fun main() {\n    println((1..5).toList())\n    println((1 until 5).toList())\n    println((10 downTo 1 step 3).toList())\n    println(3 in 1..5)\n    println('c' in 'a'..'e')\n}",
+     "notes": [
+      {
+       "line": 2,
+       "text": "A closed range includes both ends."
+      },
+      {
+       "line": 3,
+       "text": "until stops before the end."
+      },
+      {
+       "line": 4,
+       "text": "downTo with step counts down by 3."
+      },
+      {
+       "line": 5,
+       "text": "in tests membership."
+      }
+     ],
+     "output": "[1, 2, 3, 4, 5]\n[1, 2, 3, 4]\n[10, 7, 4, 1]\ntrue\ntrue"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "when without a subject",
+     "code": "fun classify(x: Any): String = when {\n    x == 0 -> \"zero\"\n    x is Int && x in 1..9 -> \"digit\"\n    x is Int -> \"big int\"\n    x is String -> \"text of ${x.length}\"\n    else -> \"other\"\n}\n\nfun main() {\n    println(classify(0))\n    println(classify(7))\n    println(classify(100))\n    println(classify(\"hey\"))\n    println(classify(2.5))\n}",
+     "notes": [
+      {
+       "line": 1,
+       "text": "Each branch is a condition; the first true one wins."
+      },
+      {
+       "line": 3,
+       "text": "After x is Int, x is smart cast so in 1..9 compiles."
+      },
+      {
+       "line": 5,
+       "text": "The String branch uses its length."
+      },
+      {
+       "line": 6,
+       "text": "else catches everything left."
+      }
+     ],
+     "output": "zero\ndigit\nbig int\ntext of 3\nother"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "val with a mutable collection",
+     "code": "fun main() {\n    val list = mutableListOf(1, 2)\n    list.add(3)\n    var total = 0\n    for (n in list) total += n\n    println(list)\n    println(total)\n}",
+     "notes": [
+      {
+       "line": 2,
+       "text": "The reference is val but the list itself is mutable."
+      },
+      {
+       "line": 4,
+       "text": "total is a var so it can change."
+      },
+      {
+       "line": 6,
+       "text": "The list now holds three items."
+      }
+     ],
+     "output": "[1, 2, 3]\n6"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does (1 until 4).toList() give?",
+     "code": "",
+     "options": [
+      "[1, 2, 3, 4]",
+      "[1, 2, 3]",
+      "[2, 3, 4]",
+      "[0, 1, 2, 3]"
+     ],
+     "answer": 1,
+     "explanation": "until excludes the end value."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "Can you add to a val mutableListOf()?",
+     "code": "",
+     "options": [
+      "No, val forbids any change",
+      "Yes, only the reference is fixed",
+      "Only with var",
+      "Only inside main"
+     ],
+     "answer": 1,
+     "explanation": "val prevents reassigning the variable, not changing a mutable collection."
+    }
+   ]
+  },
+  {
+   "number": 9,
+   "section": "COLLECTIONS & FUNCTIONS",
+   "title": "Collection Operations",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Transform, filter, reduce",
+     "body": "**map** transforms each item, **filter** keeps matches, **fold(initial)** combines items with a starting value and **reduce** combines without one.\n\n**groupBy** builds a Map of lists, **zip** pairs two lists and **partition** splits by a condition."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "Lazy sequences",
+     "body": "A **Sequence** processes items **one at a time** and only when a **terminal operation** like toList() runs. That avoids building big intermediate lists and works with infinite sources such as **generateSequence**."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "map, filter, fold, reduce",
+     "code": "fun main() {\n    val nums = listOf(1, 2, 3, 4, 5)\n    println(nums.map { it * it })\n    println(nums.filter { it % 2 == 1 })\n    println(nums.fold(10) { acc, n -> acc + n })\n    println(nums.reduce { a, b -> a * b })\n}",
+     "notes": [
+      {
+       "line": 3,
+       "text": "it is the single lambda parameter."
+      },
+      {
+       "line": 4,
+       "text": "Keeps only odd numbers."
+      },
+      {
+       "line": 5,
+       "text": "fold starts at 10 and adds every number."
+      },
+      {
+       "line": 6,
+       "text": "reduce multiplies all numbers: 5 factorial."
+      }
+     ],
+     "output": "[1, 4, 9, 16, 25]\n[1, 3, 5]\n25\n120"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "groupBy, zip, associateWith, partition",
+     "code": "fun main() {\n    val words = listOf(\"apple\", \"avocado\", \"banana\", \"blueberry\", \"cherry\")\n    println(words.groupBy { it.first() })\n    println(words.zip(listOf(1, 2, 3)))\n    println(words.associateWith { it.length }[\"banana\"])\n    println(words.partition { it.length > 6 })\n}",
+     "notes": [
+      {
+       "line": 3,
+       "text": "Groups words by their first letter."
+      },
+      {
+       "line": 4,
+       "text": "zip stops at the shorter list."
+      },
+      {
+       "line": 5,
+       "text": "associateWith builds a Map from word to length."
+      },
+      {
+       "line": 6,
+       "text": "partition returns a pair of lists."
+      }
+     ],
+     "output": "{a=[apple, avocado], b=[banana, blueberry], c=[cherry]}\n[(apple, 1), (avocado, 2), (banana, 3)]\n6\n([avocado, blueberry], [apple, banana, cherry])"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Sequences",
+     "code": "fun main() {\n    val result = generateSequence(1) { it + 1 }\n        .map { it * 3 }\n        .filter { it % 2 == 0 }\n        .take(3)\n        .toList()\n    println(result)\n    println(listOf(3, 1, 2).sortedDescending())\n}",
+     "notes": [
+      {
+       "line": 2,
+       "text": "An infinite lazy sequence starting at 1."
+      },
+      {
+       "line": 5,
+       "text": "take(3) limits the work."
+      },
+      {
+       "line": 6,
+       "text": "toList is the terminal operation that starts the pipeline."
+      }
+     ],
+     "output": "[6, 12, 18]\n[3, 2, 1]"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does groupBy return?",
+     "code": "",
+     "options": [
+      "A List of Lists",
+      "A Map from key to a list of items",
+      "A Set",
+      "A Sequence"
+     ],
+     "answer": 1,
+     "explanation": "groupBy produces Map<K, List<T>>."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does this print?",
+     "code": "fun main() {\n    println(listOf(1, 2, 3).fold(0) { a, n -> a + n * 2 })\n}",
+     "options": [
+      "6",
+      "12",
+      "3",
+      "24"
+     ],
+     "answer": 1,
+     "explanation": "fold adds each number doubled: 2 + 4 + 6."
+    }
+   ]
+  },
+  {
+   "number": 10,
+   "section": "COLLECTIONS & FUNCTIONS",
+   "title": "Extensions & Higher-Order Functions",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Extension functions",
+     "body": "An **extension function** adds a function to an existing type without inheriting from it: fun String.exclaim() = this + \"!\".\n\nInside, **this** is the **receiver** object."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "Lambdas and function types",
+     "body": "A function type is written **(Int) -> Int**. Lambdas are values you can store, pass and return. If a lambda is the **last argument**, it can go outside the parentheses.\n\nLambdas **capture** variables from their surroundings (closures)."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Extension functions",
+     "code": "fun String.exclaim(): String = this + \"!\"\n\nfun Int.isEven(): Boolean = this % 2 == 0\n\nfun main() {\n    println(\"hey\".exclaim())\n    println(4.isEven())\n    println(7.isEven())\n}",
+     "notes": [
+      {
+       "line": 1,
+       "text": "String is the receiver type and this is the string."
+      },
+      {
+       "line": 3,
+       "text": "Extensions work on primitives too."
+      },
+      {
+       "line": 6,
+       "text": "Call it like a normal member."
+      }
+     ],
+     "output": "hey!\ntrue\nfalse"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Higher-order functions",
+     "code": "fun applyTwice(x: Int, f: (Int) -> Int): Int = f(f(x))\n\nfun main() {\n    println(applyTwice(3) { it + 4 })\n    val double = { n: Int -> n * 2 }\n    println(applyTwice(5, double))\n    println(listOf(1, 2, 3).map(double))\n}",
+     "notes": [
+      {
+       "line": 1,
+       "text": "f is a parameter whose type is a function."
+      },
+      {
+       "line": 4,
+       "text": "A trailing lambda goes after the parentheses."
+      },
+      {
+       "line": 5,
+       "text": "A lambda stored in a val."
+      },
+      {
+       "line": 7,
+       "text": "Pass the same value to map."
+      }
+     ],
+     "output": "11\n20\n[2, 4, 6]"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Closures",
+     "code": "fun makeCounter(): () -> Int {\n    var count = 0\n    return { count += 1; count }\n}\n\nfun main() {\n    val next = makeCounter()\n    println(next())\n    println(next())\n    println(next())\n}",
+     "notes": [
+      {
+       "line": 1,
+       "text": "The function returns another function."
+      },
+      {
+       "line": 2,
+       "text": "count lives on inside the returned lambda."
+      },
+      {
+       "line": 8,
+       "text": "Each call increments the captured variable."
+      }
+     ],
+     "output": "1\n2\n3"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What is this in a String extension function?",
+     "code": "",
+     "options": [
+      "The class itself",
+      "The String the function is called on",
+      "A new empty String",
+      "The previous call"
+     ],
+     "answer": 1,
+     "explanation": "this refers to the receiver object."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does this print?",
+     "code": "fun main() {\n    val add = { a: Int, b: Int -> a + b }\n    println(add(2, 3))\n}",
+     "options": [
+      "5",
+      "23",
+      "Error",
+      "2 + 3"
+     ],
+     "answer": 0,
+     "explanation": "The lambda adds its two arguments."
+    }
+   ]
+  },
+  {
+   "number": 11,
+   "section": "OBJECT MODEL",
+   "title": "Interfaces, Objects & Data Classes",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Interfaces",
+     "body": "An **interface** declares functions and properties that classes **implement**. Interfaces may include default implementations, and a class can implement several."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "object, companion and data",
+     "body": "An **object** is a **singleton**. A **companion object** holds members that belong to the class itself, such as factory functions.\n\nA **data class** adds equals, hashCode, toString, copy and **destructuring** automatically."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Interface with a default",
+     "code": "interface Shape {\n    fun area(): Double\n    fun describe(): String = \"Shape with area ${area()}\"\n}\n\nclass Square(private val side: Double) : Shape {\n    override fun area(): Double = side * side\n}\n\nfun main() {\n    println(Square(3.0).describe())\n}",
+     "notes": [
+      {
+       "line": 2,
+       "text": "Implementers must provide area."
+      },
+      {
+       "line": 3,
+       "text": "describe has a default body that calls area."
+      },
+      {
+       "line": 6,
+       "text": "override supplies the required member."
+      }
+     ],
+     "output": "Shape with area 9.0"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Singleton and companion",
+     "code": "object Config {\n    val name = \"CodeLearn\"\n}\n\nclass User private constructor(val id: Int) {\n    companion object {\n        private var next = 1\n        fun create(): User = User(next++)\n    }\n}\n\nfun main() {\n    println(Config.name)\n    println(User.create().id)\n    println(User.create().id)\n}",
+     "notes": [
+      {
+       "line": 1,
+       "text": "An object is created once and used by name."
+      },
+      {
+       "line": 5,
+       "text": "The constructor is private; use the factory."
+      },
+      {
+       "line": 6,
+       "text": "The companion lives on the class."
+      },
+      {
+       "line": 8,
+       "text": "next++ returns the old value then increments."
+      }
+     ],
+     "output": "CodeLearn\n1\n2"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Data classes",
+     "code": "data class Book(val title: String, val pages: Int)\n\nfun main() {\n    val b = Book(\"Kotlin\", 300)\n    val (title, pages) = b\n    println(\"$title has $pages pages\")\n    println(b.copy(pages = 350))\n    println(setOf(b, Book(\"Kotlin\", 300)).size)\n}",
+     "notes": [
+      {
+       "line": 5,
+       "text": "Destructuring uses the generated component functions."
+      },
+      {
+       "line": 7,
+       "text": "copy changes only the named property."
+      },
+      {
+       "line": 8,
+       "text": "equals and hashCode make the two books the same set element."
+      }
+     ],
+     "output": "Kotlin has 300 pages\nBook(title=Kotlin, pages=350)\n1"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does a companion object hold?",
+     "code": "",
+     "options": [
+      "Instance-only data",
+      "Members that belong to the class itself",
+      "Only constants",
+      "Private functions only"
+     ],
+     "answer": 1,
+     "explanation": "Companion members are called on the class name, like static members."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does an object declaration create?",
+     "code": "",
+     "options": [
+      "A new instance every call",
+      "A singleton",
+      "An interface",
+      "An abstract class"
+     ],
+     "answer": 1,
+     "explanation": "There is exactly one instance."
+    }
+   ]
+  },
+  {
+   "number": 12,
+   "section": "OBJECT MODEL",
+   "title": "Sealed Classes & Interfaces",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Closed hierarchies",
+     "body": "A **sealed class** or **sealed interface** limits which subclasses can exist: all direct subclasses are known at compile time.\n\nThat makes **when** over a sealed type **exhaustive**: the compiler checks every case and no else branch is needed."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "Modelling state",
+     "body": "Sealed types are ideal for **UI state**, **results** and **expression trees**. Each subclass can carry its own data: Success holds a value, Failure holds a reason and Loading holds nothing.\n\nNote: sealed interface needs Kotlin 1.5 or newer."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "A sealed class for state",
+     "code": "sealed class UiState {\n    data class Success(val value: Int) : UiState()\n    data class Failure(val reason: String) : UiState()\n    object Loading : UiState()\n}\n\nfun show(s: UiState): String = when (s) {\n    is UiState.Success -> \"ok ${s.value}\"\n    is UiState.Failure -> \"error ${s.reason}\"\n    UiState.Loading -> \"loading\"\n}\n\nfun main() {\n    println(show(UiState.Success(5)))\n    println(show(UiState.Failure(\"boom\")))\n    println(show(UiState.Loading))\n}",
+     "notes": [
+      {
+       "line": 1,
+       "text": "Subclasses are declared inside the sealed class."
+      },
+      {
+       "line": 6,
+       "text": "object suits a case with no data."
+      },
+      {
+       "line": 9,
+       "text": "No else is needed because the cases are exhaustive."
+      },
+      {
+       "line": 11,
+       "text": "Smart cast gives access to value."
+      }
+     ],
+     "output": "ok 5\nerror boom\nloading"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "A sealed interface",
+     "code": "sealed interface Shape\ndata class Circle(val r: Double) : Shape\ndata class Rect(val w: Double, val h: Double) : Shape\n\nfun area(s: Shape): Double = when (s) {\n    is Circle -> 3.0 * s.r * s.r\n    is Rect -> s.w * s.h\n}\n\nfun main() {\n    println(area(Circle(2.0)))\n    println(area(Rect(2.0, 3.5)))\n}",
+     "notes": [
+      {
+       "line": 1,
+       "text": "A sealed interface works like a sealed class but allows multiple inheritance."
+      },
+      {
+       "line": 5,
+       "text": "Both implementations are covered."
+      },
+      {
+       "line": 6,
+       "text": "3.0 stands in for pi to keep numbers simple."
+      }
+     ],
+     "output": "12.0\n7.0"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "enum versus sealed",
+     "code": "enum class Level { LOW, HIGH }\n\nfun main() {\n    for (l in Level.values()) println(\"${l.name} ${l.ordinal}\")\n    println(Level.valueOf(\"HIGH\"))\n}",
+     "notes": [
+      {
+       "line": 1,
+       "text": "An enum has fixed constant instances."
+      },
+      {
+       "line": 4,
+       "text": "Every constant has a name and an ordinal."
+      },
+      {
+       "line": 5,
+       "text": "valueOf looks up a constant by its name."
+      }
+     ],
+     "output": "LOW 0\nHIGH 1\nHIGH"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "Why does when over a sealed type not need else?",
+     "code": "",
+     "options": [
+      "else is forbidden",
+      "All direct subclasses are known, so the compiler checks coverage",
+      "Sealed types have only one subclass",
+      "when ignores missing cases"
+     ],
+     "answer": 1,
+     "explanation": "The compiler knows every possible subtype."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does this print?",
+     "code": "sealed class S\nclass A : S()\nclass B : S()\n\nfun name(s: S) = when (s) {\n    is A -> \"A\"\n    is B -> \"B\"\n}\n\nfun main() {\n    println(name(B()))\n}",
+     "options": [
+      "A",
+      "B",
+      "Error",
+      "Nothing"
+     ],
+     "answer": 1,
+     "explanation": "The argument is a B instance."
+    }
+   ]
+  },
+  {
+   "number": 13,
+   "section": "KOTLIN IDIOMS",
+   "title": "Scope Functions & Generics",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Five scope functions",
+     "body": "**let** and **run** return the lambda result; **apply** and **also** return the object itself. **let** and **also** call the object **it**; **run**, **apply** and **with** use **this**.\n\nUse **apply** to configure an object, **let** for null checks, **also** for side effects like logging."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "Generics",
+     "body": "A **type parameter** such as **T** lets one class or function work with many types: class Box<T>. A **constraint** like T : Comparable<T> restricts which types are allowed and unlocks their members."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "let, run, with, apply and also",
+     "code": "data class Person(var name: String, var age: Int)\n\nfun main() {\n    val p = Person(\"Ada\", 36).apply { age += 1 }\n    println(p)\n    val label = p.let { \"${it.name} (${it.age})\" }\n    println(label)\n    val s = with(p) { \"$name is $age\" }\n    println(s)\n    p.also { println(\"also: ${it.name}\") }.run { println(age) }\n}",
+     "notes": [
+      {
+       "line": 4,
+       "text": "apply configures the object and returns it."
+      },
+      {
+       "line": 6,
+       "text": "let hands the object in as it and returns the block result."
+      },
+      {
+       "line": 8,
+       "text": "with uses the object as this."
+      },
+      {
+       "line": 10,
+       "text": "also returns p, then run reads age through this."
+      }
+     ],
+     "output": "Person(name=Ada, age=37)\nAda (37)\nAda is 37\nalso: Ada\n37"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Generic functions and classes",
+     "code": "fun <T> firstOrFallback(items: List<T>, fallback: T): T =\n    if (items.isEmpty()) fallback else items[0]\n\nclass Box<T>(val value: T) {\n    fun show(): String = \"Box($value)\"\n}\n\nfun main() {\n    println(firstOrFallback(listOf(5, 6), 0))\n    println(firstOrFallback(emptyList<String>(), \"none\"))\n    println(Box(\"hi\").show())\n    println(Box(3.5).show())\n}",
+     "notes": [
+      {
+       "line": 1,
+       "text": "T is inferred from the arguments."
+      },
+      {
+       "line": 5,
+       "text": "A generic class stores a value of any type."
+      },
+      {
+       "line": 11,
+       "text": "T became String."
+      },
+      {
+       "line": 12,
+       "text": "T became Double."
+      }
+     ],
+     "output": "5\nnone\nBox(hi)\nBox(3.5)"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Generic constraints",
+     "code": "fun <T : Comparable<T>> biggest(a: T, b: T): T = if (a > b) a else b\n\nfun main() {\n    println(biggest(3, 9))\n    println(biggest(\"pear\", \"apple\"))\n}",
+     "notes": [
+      {
+       "line": 1,
+       "text": "T must be Comparable, so > works."
+      },
+      {
+       "line": 5,
+       "text": "Strings compare alphabetically."
+      }
+     ],
+     "output": "9\npear"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "Which scope function returns the object itself and uses this?",
+     "code": "",
+     "options": [
+      "let",
+      "apply",
+      "run",
+      "also"
+     ],
+     "answer": 1,
+     "explanation": "apply uses this as the receiver and returns the object."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does this print?",
+     "code": "fun <T> pair(a: T, b: T) = listOf(a, b)\n\nfun main() {\n    println(pair(1, 2))\n}",
+     "options": [
+      "[1, 2]",
+      "[2, 1]",
+      "1, 2",
+      "Error"
+     ],
+     "answer": 0,
+     "explanation": "T is inferred as Int and listOf keeps the order."
+    }
+   ]
+  },
+  {
+   "number": 14,
+   "section": "KOTLIN IDIOMS",
+   "title": "Coroutines & Flow Concepts",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Coroutines",
+     "body": "A **coroutine** is a lightweight task that can **suspend** without blocking a thread. A **suspend** function can call **delay** or other suspend functions. **launch** starts a task, **async** returns a result with **await**, and **runBlocking** bridges normal code.\n\nThe examples in this chapter need the kotlinx.coroutines library, so read them here; the basic online sandbox has only the standard library."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "Flow",
+     "body": "A **Flow** is a **cold** asynchronous stream: nothing runs until something calls **collect**. Operators like **map** and **filter** transform values as they arrive.\n\nIn Android, **StateFlow** holds the latest UI state and **structured concurrency** cancels child work when its scope ends."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "launch and runBlocking",
+     "code": "import kotlinx.coroutines.*\n\nfun main() = runBlocking {\n    launch {\n        delay(100)\n        println(\"world\")\n    }\n    println(\"hello\")\n}",
+     "notes": [
+      {
+       "line": 3,
+       "text": "runBlocking runs coroutines inside a normal main."
+      },
+      {
+       "line": 4,
+       "text": "launch starts a child coroutine without waiting."
+      },
+      {
+       "line": 5,
+       "text": "delay suspends without blocking the thread."
+      },
+      {
+       "line": 8,
+       "text": "This line runs first, so hello prints before world."
+      }
+     ],
+     "output": "hello\nworld"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "async and await",
+     "code": "import kotlinx.coroutines.*\n\nsuspend fun fetch(n: Int): Int {\n    delay(50)\n    return n * 2\n}\n\nfun main() = runBlocking {\n    val a = async { fetch(1) }\n    val b = async { fetch(2) }\n    println(a.await() + b.await())\n}",
+     "notes": [
+      {
+       "line": 3,
+       "text": "suspend marks a function that may pause."
+      },
+      {
+       "line": 9,
+       "text": "Both async blocks start immediately and run concurrently."
+      },
+      {
+       "line": 11,
+       "text": "await collects each result: 2 plus 4."
+      }
+     ],
+     "output": "6"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "A cold Flow",
+     "code": "import kotlinx.coroutines.*\nimport kotlinx.coroutines.flow.*\n\nfun main() = runBlocking {\n    val numbers = flow {\n        for (i in 1..3) {\n            emit(i)\n        }\n    }\n    numbers.map { it * 10 }.collect { println(it) }\n}",
+     "notes": [
+      {
+       "line": 5,
+       "text": "flow builds a stream but does not run yet."
+      },
+      {
+       "line": 7,
+       "text": "emit sends a value downstream."
+      },
+      {
+       "line": 10,
+       "text": "collect starts the flow and receives each mapped value."
+      }
+     ],
+     "output": "10\n20\n30"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does suspend mean on a function?",
+     "code": "",
+     "options": [
+      "It runs on another computer",
+      "It can pause without blocking its thread",
+      "It cannot return a value",
+      "It runs only once"
+     ],
+     "answer": 1,
+     "explanation": "Suspending functions can be paused and resumed by the coroutine machinery."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does it mean that a Flow is cold?",
+     "code": "",
+     "options": [
+      "It stores old data",
+      "Nothing runs until it is collected",
+      "It can only emit once",
+      "It is read only"
+     ],
+     "answer": 1,
+     "explanation": "A cold flow starts producing when a collector subscribes."
+    }
+   ]
+  }
+ ],
+ "quiz": [
+  {
+   "chapter": 7,
+   "question": "What does this print?",
+   "code": "fun main() {\n    val x: Any = \"hi\"\n    println(x as? Int)\n}",
+   "options": [
+    "null",
+    "hi",
+    "Error",
+    "0"
+   ],
+   "answer": 0,
+   "explanation": "as? returns null when the cast fails.",
+   "id": "kta1"
+  },
+  {
+   "chapter": 7,
+   "question": "What does this print?",
+   "code": "fun main() {\n    val s: String? = \"abc\"\n    println(s?.length ?: 0)\n}",
+   "options": [
+    "3",
+    "abc",
+    "0",
+    "null"
+   ],
+   "answer": 0,
+   "explanation": "s is not null so its length is used.",
+   "id": "kta2"
+  },
+  {
+   "chapter": 8,
+   "question": "What does this print?",
+   "code": "fun main() {\n    println((1..10 step 3).toList())\n}",
+   "options": [
+    "[1, 4, 7, 10]",
+    "[1, 3, 5, 7, 9]",
+    "[1, 4, 7]",
+    "[4, 7, 10]"
+   ],
+   "answer": 0,
+   "explanation": "step 3 jumps by three from 1.",
+   "id": "kta3"
+  },
+  {
+   "chapter": 8,
+   "question": "What does this print?",
+   "code": "fun main() {\n    val n = 15\n    val r = when {\n        n % 15 == 0 -> \"FizzBuzz\"\n        n % 3 == 0 -> \"Fizz\"\n        else -> \"other\"\n    }\n    println(r)\n}",
+   "options": [
+    "FizzBuzz",
+    "Fizz",
+    "other",
+    "Error"
+   ],
+   "answer": 0,
+   "explanation": "15 is divisible by 15, the first condition.",
+   "id": "kta4"
+  },
+  {
+   "chapter": 9,
+   "question": "What does this print?",
+   "code": "fun main() {\n    println(listOf(1, 2, 3, 4).filter { it > 2 }.map { it * 10 })\n}",
+   "options": [
+    "[30, 40]",
+    "[3, 4]",
+    "[10, 20]",
+    "[3, 4, 30, 40]"
+   ],
+   "answer": 0,
+   "explanation": "filter keeps 3 and 4, then map multiplies by 10.",
+   "id": "kta5"
+  },
+  {
+   "chapter": 9,
+   "question": "What does this print?",
+   "code": "fun main() {\n    println(listOf(\"a\", \"bb\", \"cc\").groupBy { it.length })\n}",
+   "options": [
+    "{1=[a], 2=[bb, cc]}",
+    "{a=1, bb=2, cc=2}",
+    "[[a], [bb, cc]]",
+    "{1=a, 2=bb}"
+   ],
+   "answer": 0,
+   "explanation": "groupBy keys each word by its length.",
+   "id": "kta6"
+  },
+  {
+   "chapter": 10,
+   "question": "What does this print?",
+   "code": "fun Int.double() = this * 2\n\nfun main() {\n    println(5.double())\n}",
+   "options": [
+    "10",
+    "5",
+    "Error",
+    "25"
+   ],
+   "answer": 0,
+   "explanation": "The extension doubles its receiver.",
+   "id": "kta7"
+  },
+  {
+   "chapter": 10,
+   "question": "What is the type of the lambda { a: Int, b: Int -> a + b }?",
+   "code": "",
+   "options": [
+    "(Int) -> Int",
+    "(Int, Int) -> Int",
+    "Int",
+    "() -> Unit"
+   ],
+   "answer": 1,
+   "explanation": "It takes two Ints and returns an Int.",
+   "id": "kta8"
+  },
+  {
+   "chapter": 11,
+   "question": "What does this print?",
+   "code": "object Counter {\n    var n = 0\n}\n\nfun main() {\n    Counter.n++\n    Counter.n++\n    println(Counter.n)\n}",
+   "options": [
+    "2",
+    "0",
+    "1",
+    "Error"
+   ],
+   "answer": 0,
+   "explanation": "The singleton keeps its state between calls.",
+   "id": "kta9"
+  },
+  {
+   "chapter": 11,
+   "question": "What does this print?",
+   "code": "data class P(val x: Int)\n\nfun main() {\n    println(P(1).copy(x = 2))\n}",
+   "options": [
+    "P(x=2)",
+    "P(x=1)",
+    "2",
+    "Error"
+   ],
+   "answer": 0,
+   "explanation": "copy returns a changed duplicate.",
+   "id": "kta10"
+  },
+  {
+   "chapter": 12,
+   "question": "What is the main benefit of a sealed hierarchy?",
+   "code": "",
+   "options": [
+    "Faster code",
+    "Exhaustive when checks",
+    "Smaller APK size",
+    "Automatic null safety"
+   ],
+   "answer": 1,
+   "explanation": "The compiler can verify that every subtype is handled.",
+   "id": "kta11"
+  },
+  {
+   "chapter": 12,
+   "question": "Which of these must be true for a direct subclass of a sealed class?",
+   "code": "",
+   "options": [
+    "It is known at compile time",
+    "It must be an object",
+    "It must be abstract",
+    "It must be generic"
+   ],
+   "answer": 0,
+   "explanation": "Direct subclasses are limited to those known at compile time.",
+   "id": "kta12"
+  },
+  {
+   "chapter": 13,
+   "question": "What does this print?",
+   "code": "fun main() {\n    val s = StringBuilder().apply {\n        append(\"a\")\n        append(\"b\")\n    }\n    println(s)\n}",
+   "options": [
+    "ab",
+    "a",
+    "b",
+    "Error"
+   ],
+   "answer": 0,
+   "explanation": "apply returns the StringBuilder after both appends.",
+   "id": "kta13"
+  },
+  {
+   "chapter": 13,
+   "question": "What is T in fun <T> id(x: T) = x?",
+   "code": "",
+   "options": [
+    "A type parameter",
+    "A class",
+    "A function name",
+    "A keyword"
+   ],
+   "answer": 0,
+   "explanation": "T is a placeholder replaced by the actual type at each call.",
+   "id": "kta14"
+  },
+  {
+   "chapter": 14,
+   "question": "Which keyword marks a function that can pause?",
+   "code": "",
+   "options": [
+    "async",
+    "suspend",
+    "pause",
+    "lazy"
+   ],
+   "answer": 1,
+   "explanation": "suspend marks functions that may suspend a coroutine.",
+   "id": "kta15"
+  },
+  {
+   "chapter": 14,
+   "question": "Which call starts a cold Flow?",
+   "code": "",
+   "options": [
+    "emit",
+    "collect",
+    "map",
+    "flow"
+   ],
+   "answer": 1,
+   "explanation": "Collecting is what triggers the flow to run.",
+   "id": "kta16"
+  }
+ ],
+ "examples": [
+  {
+   "id": "kt_null_safety_cast",
+   "title": "Kotlin: Safe Casts and Elvis",
+   "description": "as?, ?., ?: and let in one place.",
+   "code": "fun lengthOf(x: Any?): Int = (x as? String)?.length ?: -1\n\nfun main() {\n    val inputs = listOf(\"kotlin\", 42, null, \"hi\")\n    for (item in inputs) {\n        println(\"$item -> ${lengthOf(item)}\")\n    }\n    val name: String? = null\n    name?.let { println(\"hello $it\") }\n    println(name ?: \"anonymous\")\n}\n"
+  },
+  {
+   "id": "kt_ranges_when",
+   "title": "Kotlin: Ranges and when",
+   "description": "Grade lookup with ranges.",
+   "code": "fun grade(score: Int): String = when (score) {\n    in 90..100 -> \"A\"\n    in 80..89 -> \"B\"\n    in 70..79 -> \"C\"\n    else -> \"F\"\n}\n\nfun main() {\n    for (s in listOf(95, 85, 72, 40)) println(\"$s -> ${grade(s)}\")\n    for (i in 10 downTo 1 step 4) print(\"$i \")\n    println()\n    println((1 until 5).sum())\n}\n"
+  },
+  {
+   "id": "kt_collection_ops",
+   "title": "Kotlin: Collection Operations",
+   "description": "map, filter, fold, groupBy and zip.",
+   "code": "fun main() {\n    val nums = listOf(5, 3, 8, 1, 9, 2)\n    println(nums.map { it * 2 })\n    println(nums.filter { it > 3 })\n    println(nums.fold(0) { acc, n -> acc + n })\n    println(nums.sortedDescending().take(3))\n    val words = listOf(\"tree\", \"tea\", \"sky\", \"sun\", \"table\")\n    println(words.groupBy { it.first() })\n    println(words.zip(nums))\n    println(words.sortedBy { it.length }.last())\n}\n"
+  },
+  {
+   "id": "kt_sequences",
+   "title": "Kotlin: Sequences",
+   "description": "Lazy pipelines.",
+   "code": "fun main() {\n    val firstSquares = generateSequence(1) { it + 1 }\n        .map { it * it }\n        .filter { it % 2 == 1 }\n        .take(5)\n        .toList()\n    println(firstSquares)\n    val lazy = sequenceOf(1, 2, 3).map { println(\"map $it\"); it * 10 }\n    println(\"before terminal\")\n    println(lazy.toList())\n}\n"
+  },
+  {
+   "id": "kt_extension_functions",
+   "title": "Kotlin: Extension Functions",
+   "description": "Add functions to existing types.",
+   "code": "fun String.isPalindrome(): Boolean = this == this.reversed()\n\nfun String.vowelCount(): Int = count { it in \"aeiou\" }\n\nfun <T> List<T>.secondOrNull(): T? = if (size >= 2) this[1] else null\n\nfun main() {\n    println(\"level\".isPalindrome())\n    println(\"kotlin\".isPalindrome())\n    println(\"education\".vowelCount())\n    println(listOf(1, 2, 3).secondOrNull())\n    println(emptyList<Int>().secondOrNull())\n}\n"
+  },
+  {
+   "id": "kt_higher_order",
+   "title": "Kotlin: Higher-Order Functions",
+   "description": "Functions as values.",
+   "code": "fun operate(a: Int, b: Int, op: (Int, Int) -> Int): Int = op(a, b)\n\nfun compose(f: (Int) -> Int, g: (Int) -> Int): (Int) -> Int = { x -> g(f(x)) }\n\nfun main() {\n    println(operate(6, 3) { x, y -> x * y })\n    println(operate(6, 3) { x, y -> x + y })\n    val inc = { x: Int -> x + 1 }\n    val dbl = { x: Int -> x * 2 }\n    println(compose(inc, dbl)(5))\n    println(listOf(1, 2, 3).map(compose(dbl, inc)))\n}\n"
+  },
+  {
+   "id": "kt_interfaces_objects",
+   "title": "Kotlin: Interfaces and Objects",
+   "description": "Interface defaults, singleton and companion.",
+   "code": "interface Greeter {\n    val name: String\n    fun greet(): String = \"Hello, $name!\"\n}\n\nclass Person(override val name: String) : Greeter\n\nobject Logger {\n    private val lines = mutableListOf<String>()\n    fun log(msg: String) { lines.add(msg) }\n    fun dump() = lines.joinToString(\" | \")\n}\n\nclass Counter {\n    companion object {\n        var created = 0\n    }\n    init { created++ }\n}\n\nfun main() {\n    println(Person(\"Ada\").greet())\n    Logger.log(\"start\")\n    Logger.log(\"end\")\n    println(Logger.dump())\n    Counter()\n    Counter()\n    println(Counter.created)\n}\n"
+  },
+  {
+   "id": "kt_data_class_destructuring",
+   "title": "Kotlin: Data Classes",
+   "description": "copy, equality and destructuring.",
+   "code": "data class Point(val x: Int, val y: Int)\n\nfun main() {\n    val p = Point(3, 4)\n    val (x, y) = p\n    println(\"x=$x y=$y\")\n    println(p.copy(y = 10))\n    val points = listOf(Point(1, 2), Point(1, 2), Point(5, 6))\n    println(points.toSet().size)\n    println(points.map { it.x + it.y })\n}\n"
+  },
+  {
+   "id": "kt_sealed_class",
+   "title": "Kotlin: Sealed Classes",
+   "description": "An expression tree evaluator.",
+   "code": "sealed class Expr\ndata class Num(val value: Int) : Expr()\ndata class Add(val left: Expr, val right: Expr) : Expr()\ndata class Mul(val left: Expr, val right: Expr) : Expr()\n\nfun eval(e: Expr): Int = when (e) {\n    is Num -> e.value\n    is Add -> eval(e.left) + eval(e.right)\n    is Mul -> eval(e.left) * eval(e.right)\n}\n\nfun main() {\n    val expr = Add(Num(2), Mul(Num(3), Num(4)))\n    println(eval(expr))\n    println(expr)\n}\n"
+  },
+  {
+   "id": "kt_scope_functions",
+   "title": "Kotlin: Scope Functions",
+   "description": "let, with, apply and also.",
+   "code": "data class Config(var host: String = \"\", var port: Int = 0)\n\nfun main() {\n    val cfg = Config().apply {\n        host = \"localhost\"\n        port = 8080\n    }\n    println(cfg)\n    val url = cfg.let { \"http://${it.host}:${it.port}\" }\n    println(url)\n    val text = with(StringBuilder()) {\n        append(\"a\")\n        append(\"b\")\n        toString()\n    }\n    println(text)\n    cfg.also { println(\"port is ${it.port}\") }.run { port += 1 }\n    println(cfg.port)\n}\n"
+  },
+  {
+   "id": "kt_generics",
+   "title": "Kotlin: Generics",
+   "description": "A generic stack and constrained function.",
+   "code": "class Stack<T> {\n    private val items = mutableListOf<T>()\n    fun push(item: T) { items.add(item) }\n    fun pop(): T? = if (items.isEmpty()) null else items.removeAt(items.size - 1)\n    val size: Int get() = items.size\n}\n\nfun <T : Comparable<T>> maxOf3(a: T, b: T, c: T): T = maxOf(a, maxOf(b, c))\n\nfun main() {\n    val s = Stack<String>()\n    s.push(\"a\")\n    s.push(\"b\")\n    println(s.pop())\n    println(s.size)\n    println(maxOf3(3, 9, 5))\n    println(maxOf3(\"kiwi\", \"apple\", \"pear\"))\n}\n"
+  },
+  {
+   "id": "kt_sequence_builder",
+   "title": "Kotlin: Lazy Streams",
+   "description": "A cold stream with the sequence builder, like Flow.",
+   "code": "fun squares(): Sequence<Int> = sequence {\n    for (i in 1..4) {\n        println(\"producing $i\")\n        yield(i * i)\n    }\n}\n\nfun main() {\n    val seq = squares()\n    println(\"created\")\n    for (v in seq) println(\"got $v\")\n}\n"
+  }
+ ],
+ "challenges": [
+  {
+   "id": "kt_fold_squares",
+   "title": "Fold the Squares",
+   "prompt": "Use fold to print the sum of the squares of the numbers 1 to 5.",
+   "starter": "fun main() {\n    val nums = listOf(1, 2, 3, 4, 5)\n    // Use fold to print the sum of the squares\n}\n",
+   "expected": "55",
+   "stdin": ""
+  },
+  {
+   "id": "kt_palindrome_ext",
+   "title": "Palindrome Extension",
+   "prompt": "Complete the extension function isPalindrome so it compares the string with its reverse.",
+   "starter": "fun String.isPalindrome(): Boolean {\n    // Compare the string with its reverse\n    return false\n}\n\nfun main() {\n    println(\"level\".isPalindrome())\n    println(\"kotlin\".isPalindrome())\n}\n",
+   "expected": "true\nfalse",
+   "stdin": ""
+  },
+  {
+   "id": "kt_group_length",
+   "title": "Group by Length",
+   "prompt": "Print the words grouped by their length.",
+   "starter": "fun main() {\n    val words = listOf(\"kiwi\", \"fig\", \"plum\", \"pear\")\n    // Print words.groupBy by length\n}\n",
+   "expected": "{4=[kiwi, plum, pear], 3=[fig]}",
+   "stdin": ""
+  },
+  {
+   "id": "kt_sealed_area",
+   "title": "Sealed Shapes",
+   "prompt": "Finish area() with a when over the sealed class so it returns the real area.",
+   "starter": "sealed class Shape\nclass Square(val side: Double) : Shape()\nclass Rect(val w: Double, val h: Double) : Shape()\n\nfun area(shape: Shape): Double {\n    // Use when with is checks\n    return 0.0\n}\n\nfun main() {\n    println(area(Square(4.0)))\n    println(area(Rect(2.0, 5.0)))\n}\n",
+   "expected": "16.0\n10.0",
+   "stdin": ""
+  },
+  {
+   "id": "kt_apply_builder",
+   "title": "Build with apply",
+   "prompt": "Use apply to append Kotlin and then  rocks to the StringBuilder, then print it.",
+   "starter": "fun main() {\n    val sb = StringBuilder()\n    // Use apply to append \"Kotlin\" and then \" rocks\"\n    println(sb.toString())\n}\n",
+   "expected": "Kotlin rocks",
+   "stdin": ""
+  },
+  {
+   "id": "kt_safe_length",
+   "title": "Safe Length",
+   "prompt": "Finish lengthOf using as?, ?. and ?: so it returns the string length or 0.",
+   "starter": "fun lengthOf(x: Any?): Int {\n    // Use as? with ?. and ?:\n    return -1\n}\n\nfun main() {\n    println(lengthOf(\"four\"))\n    println(lengthOf(5))\n    println(lengthOf(null))\n}\n",
+   "expected": "4\n0\n0",
+   "stdin": ""
+  }
+ ]
+}

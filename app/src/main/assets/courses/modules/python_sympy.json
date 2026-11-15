@@ -1,0 +1,247 @@
+{
+ "id": "python_sympy",
+ "course": "python_basics",
+ "order": 23,
+ "chapters": [
+  {
+   "number": 16,
+   "section": "SCIENTIFIC PYTHON",
+   "title": "SymPy Symbolic Math",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Exact algebra",
+     "body": "**SymPy** works with **symbols** instead of numbers, so answers stay exact: fractions stay fractions and square roots stay roots.\n\nCreate variables with **symbols**, then **expand**, **factor**, **simplify**, **solve**, **diff**, **integrate** and **limit**."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "expand, factor and simplify",
+     "code": "from sympy import symbols, expand, factor, simplify\n\nx = symbols(\"x\")\nprint(expand((x + 1) ** 2))\nprint(factor(x**2 - 1))\nprint(simplify((x**2 - 1) / (x - 1)))",
+     "notes": [
+      {
+       "line": 3,
+       "text": "symbols creates a symbolic variable."
+      },
+      {
+       "line": 4,
+       "text": "expand multiplies everything out."
+      },
+      {
+       "line": 5,
+       "text": "factor finds the product form."
+      },
+      {
+       "line": 6,
+       "text": "simplify cancels the common factor."
+      }
+     ],
+     "output": "x**2 + 2*x + 1\n(x - 1)*(x + 1)\nx + 1"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Solving equations",
+     "code": "from sympy import symbols, solve, Eq\n\nx = symbols(\"x\")\nprint(solve(x**2 - 4, x))\nprint(solve(Eq(2 * x + 3, 11), x))",
+     "notes": [
+      {
+       "line": 4,
+       "text": "solve finds every x that makes the expression zero."
+      },
+      {
+       "line": 5,
+       "text": "Eq builds an equation with two sides."
+      }
+     ],
+     "output": "[-2, 2]\n[4]"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Derivatives, integrals and limits",
+     "code": "from sympy import symbols, diff, integrate, limit, sin\n\nx = symbols(\"x\")\nprint(diff(x**3, x))\nprint(integrate(2 * x, x))\nprint(limit(sin(x) / x, x, 0))",
+     "notes": [
+      {
+       "line": 4,
+       "text": "diff differentiates with respect to x."
+      },
+      {
+       "line": 5,
+       "text": "integrate finds an antiderivative."
+      },
+      {
+       "line": 6,
+       "text": "limit evaluates the limit as x approaches 0."
+      }
+     ],
+     "output": "3*x**2\nx**2\n1"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Matrices",
+     "code": "from sympy import Matrix\n\nM = Matrix([[1, 2], [3, 4]])\nprint(M.det())\nprint(M.inv())\nprint(M * M)",
+     "notes": [
+      {
+       "line": 3,
+       "text": "A Matrix holds exact entries."
+      },
+      {
+       "line": 4,
+       "text": "The determinant is 1*4 - 2*3."
+      },
+      {
+       "line": 5,
+       "text": "The inverse keeps exact fractions."
+      }
+     ],
+     "output": "-2\nMatrix([[-2, 1], [3/2, -1/2]])\nMatrix([[7, 10], [15, 22]])"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does solve(x**2 - 4, x) return?",
+     "code": "",
+     "options": [
+      "[4]",
+      "[-2, 2]",
+      "[2]",
+      "[0, 4]"
+     ],
+     "answer": 1,
+     "explanation": "Both -2 and 2 satisfy x squared equals 4."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "Why use SymPy instead of floats for algebra?",
+     "code": "",
+     "options": [
+      "It is always faster",
+      "It keeps results exact and symbolic",
+      "It draws charts",
+      "It needs no imports"
+     ],
+     "answer": 1,
+     "explanation": "SymPy returns exact expressions such as 3/2 rather than rounded floats."
+    }
+   ]
+  }
+ ],
+ "quiz": [
+  {
+   "chapter": 16,
+   "question": "What does this print?",
+   "code": "from sympy import symbols, expand\nx = symbols(\"x\")\nprint(expand((x + 1) ** 2))",
+   "options": [
+    "x**2 + 2*x + 1",
+    "x**2 + 1",
+    "2*x + 1",
+    "x + 1"
+   ],
+   "answer": 0,
+   "explanation": "expand multiplies (x + 1) by itself.",
+   "id": "sp1"
+  },
+  {
+   "chapter": 16,
+   "question": "What does this print?",
+   "code": "from sympy import symbols, diff\nx = symbols(\"x\")\nprint(diff(x**3, x))",
+   "options": [
+    "3*x**2",
+    "x**3",
+    "3*x",
+    "x**2"
+   ],
+   "answer": 0,
+   "explanation": "The derivative of x cubed is 3 x squared.",
+   "id": "sp2"
+  },
+  {
+   "chapter": 16,
+   "question": "What does this print?",
+   "code": "from sympy import symbols, solve, Eq\nx = symbols(\"x\")\nprint(solve(Eq(2 * x + 3, 11), x))",
+   "options": [
+    "[4]",
+    "[2]",
+    "[1, 4]",
+    "[3]"
+   ],
+   "answer": 0,
+   "explanation": "2x + 3 = 11 gives x = 4.",
+   "id": "sp3"
+  },
+  {
+   "chapter": 16,
+   "question": "What does this print?",
+   "code": "from sympy import Matrix\nprint(Matrix([[1, 2], [3, 4]]).det())",
+   "options": [
+    "-2",
+    "2",
+    "10",
+    "0"
+   ],
+   "answer": 0,
+   "explanation": "The determinant is 1*4 - 2*3.",
+   "id": "sp4"
+  }
+ ],
+ "examples": [
+  {
+   "id": "sp_symbols",
+   "title": "SymPy: Symbols",
+   "description": "Create variables and build expressions.",
+   "code": "from sympy import symbols\n\nx, y = symbols(\"x y\")\nexpr = x**2 + 2*x*y + y**2\nprint(expr)\nprint(expr.subs({x: 1, y: 2}))\nprint(expr.free_symbols)\n"
+  },
+  {
+   "id": "sp_expand_factor",
+   "title": "SymPy: Expand and Factor",
+   "description": "Move between forms.",
+   "code": "from sympy import symbols, expand, factor\n\nx = symbols(\"x\")\nprint(expand((x - 2) * (x + 5)))\nprint(factor(x**2 + 5*x + 6))\nprint(factor(x**3 - x))\n"
+  },
+  {
+   "id": "sp_simplify",
+   "title": "SymPy: Simplify",
+   "description": "Cancel and combine terms.",
+   "code": "from sympy import symbols, simplify, sin, cos\n\nx = symbols(\"x\")\nprint(simplify((x**2 - 9) / (x - 3)))\nprint(simplify(sin(x)**2 + cos(x)**2))\nprint(simplify(x/(x + 1) + 1/(x + 1)))\n"
+  },
+  {
+   "id": "sp_solve",
+   "title": "SymPy: Solve",
+   "description": "Equations and systems.",
+   "code": "from sympy import symbols, solve, Eq\n\nx, y = symbols(\"x y\")\nprint(solve(x**2 - 5*x + 6, x))\nprint(solve([x + y - 10, x - y - 2], [x, y]))\nprint(solve(Eq(3*x, 12), x))\n"
+  },
+  {
+   "id": "sp_diff_integrate",
+   "title": "SymPy: Derivatives and Integrals",
+   "description": "Calculus on symbols.",
+   "code": "from sympy import symbols, diff, integrate, sin, exp\n\nx = symbols(\"x\")\nprint(diff(x**4 + 3*x, x))\nprint(diff(sin(x) * exp(x), x))\nprint(integrate(x**2, x))\nprint(integrate(x**2, (x, 0, 3)))\n"
+  },
+  {
+   "id": "sp_limit",
+   "title": "SymPy: Limits",
+   "description": "Evaluate limits exactly.",
+   "code": "from sympy import symbols, limit, sin, oo\n\nx = symbols(\"x\")\nprint(limit(sin(x) / x, x, 0))\nprint(limit(1 / x, x, oo))\nprint(limit((1 + 1 / x) ** x, x, oo))\n"
+  },
+  {
+   "id": "sp_matrices",
+   "title": "SymPy: Matrices",
+   "description": "Exact linear algebra.",
+   "code": "from sympy import Matrix\n\nA = Matrix([[2, 1], [1, 3]])\nprint(A.det())\nprint(A.inv())\nprint(A * A)\nprint(A.eigenvals())\nprint(A.T)\n"
+  }
+ ],
+ "challenges": [
+  {
+   "id": "sp_solve_nine",
+   "title": "SymPy: Solve x squared = 9",
+   "prompt": "Use solve to print the solutions of x**2 - 9 = 0.",
+   "starter": "from sympy import symbols, solve\n\nx = symbols(\"x\")\n# Print the solutions of x**2 - 9\n",
+   "expected": "[-3, 3]",
+   "stdin": ""
+  },
+  {
+   "id": "sp_derivative",
+   "title": "SymPy: Differentiate",
+   "prompt": "Print the derivative of x**4.",
+   "starter": "from sympy import symbols, diff\n\nx = symbols(\"x\")\n# Print the derivative of x**4\n",
+   "expected": "4*x**3",
+   "stdin": ""
+  }
+ ]
+}

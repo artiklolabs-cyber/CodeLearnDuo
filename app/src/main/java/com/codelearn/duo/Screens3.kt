@@ -459,7 +459,11 @@ fun CodeEditorScreen(vm: AppViewModel, path: String, onBack: () -> Unit) {
                     } else {
                         if (r.stdout.isNotEmpty()) Text(r.stdout, color = Pal.green, fontFamily = FontFamily.Monospace, fontSize = 13.sp)
                         if (r.errorOutput.isNotBlank()) Text(r.errorOutput, color = Pal.red, fontFamily = FontFamily.Monospace, fontSize = 13.sp)
-                        if (r.stdout.isEmpty() && r.errorOutput.isBlank()) Text("(no output)", color = Pal.dim, fontFamily = FontFamily.Monospace, fontSize = 13.sp)
+                        if (r.images.isNotEmpty()) {
+                            Spacer(Modifier.height(8.dp))
+                            OutputImages(r.images)
+                        }
+                        if (r.stdout.isEmpty() && r.errorOutput.isBlank() && r.images.isEmpty()) Text("(no output)", color = Pal.dim, fontFamily = FontFamily.Monospace, fontSize = 13.sp)
                     }
                 }
             }

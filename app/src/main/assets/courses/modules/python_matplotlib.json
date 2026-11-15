@@ -1,0 +1,245 @@
+{
+ "id": "python_matplotlib",
+ "course": "python_basics",
+ "order": 21,
+ "chapters": [
+  {
+   "number": 14,
+   "section": "SCIENTIFIC PYTHON",
+   "title": "Matplotlib Charts",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Drawing with pyplot",
+     "body": "**matplotlib.pyplot** draws charts. Call a plotting function, add a **title** and **labels**, then **plt.show()**.\n\nIn this app the finished picture appears as an **image** in the output panel under your text output."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "A line plot",
+     "code": "import matplotlib.pyplot as plt\n\nx = [1, 2, 3, 4]\ny = [1, 4, 9, 16]\nplt.plot(x, y, color=\"green\", marker=\"o\")\nplt.title(\"Squares\")\nplt.show()\nprint(\"plot shown\")",
+     "notes": [
+      {
+       "line": 5,
+       "text": "plot draws a line; color and marker style it."
+      },
+      {
+       "line": 6,
+       "text": "A title explains the chart."
+      },
+      {
+       "line": 7,
+       "text": "show renders the figure into the output panel."
+      }
+     ],
+     "output": "plot shown"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Bars and scatter in subplots",
+     "code": "import matplotlib.pyplot as plt\n\nfig, axes = plt.subplots(1, 2)\naxes[0].bar([\"A\", \"B\", \"C\"], [3, 5, 2])\naxes[1].scatter([1, 2, 3], [3, 1, 2], color=\"purple\")\nfig.suptitle(\"Two plots\")\nplt.show()\nprint(len(axes))",
+     "notes": [
+      {
+       "line": 3,
+       "text": "subplots makes one figure with a row of two axes."
+      },
+      {
+       "line": 4,
+       "text": "Each axes object has its own plotting methods."
+      },
+      {
+       "line": 6,
+       "text": "suptitle titles the whole figure."
+      }
+     ],
+     "output": "2"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Histogram, pie and counts",
+     "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\ndata = np.array([1, 2, 2, 3, 3, 3, 4, 4, 5])\ncounts, edges = np.histogram(data, bins=4)\nprint(counts.tolist())\nfig, (ax1, ax2) = plt.subplots(1, 2)\nax1.hist(data, bins=4)\nax2.pie([30, 50, 20], labels=[\"x\", \"y\", \"z\"])\nplt.show()",
+     "notes": [
+      {
+       "line": 5,
+       "text": "histogram counts values per bin without drawing."
+      },
+      {
+       "line": 7,
+       "text": "hist draws the same bins as bars."
+      },
+      {
+       "line": 8,
+       "text": "pie draws proportional slices."
+      }
+     ],
+     "output": "[1, 2, 3, 3]"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Heatmaps and styling",
+     "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\ngrid = np.arange(12).reshape(3, 4)\nfig, ax = plt.subplots()\nim = ax.imshow(grid, cmap=\"viridis\")\nfig.colorbar(im)\nax.set_title(\"Heatmap\")\nax.set_xlabel(\"column\")\nax.set_ylabel(\"row\")\nplt.show()\nprint(grid.max())",
+     "notes": [
+      {
+       "line": 6,
+       "text": "imshow draws a matrix as colored cells."
+      },
+      {
+       "line": 7,
+       "text": "colorbar adds the color legend."
+      },
+      {
+       "line": 9,
+       "text": "Labels describe each axis."
+      }
+     ],
+     "output": "11"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "Which call displays the figure in the output panel?",
+     "code": "",
+     "options": [
+      "plt.draw_to_screen()",
+      "plt.show()",
+      "plt.print()",
+      "plt.open()"
+     ],
+     "answer": 1,
+     "explanation": "plt.show() renders the current figures and the app displays them."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "How many axes does plt.subplots(2, 2) create?",
+     "code": "",
+     "options": [
+      "2",
+      "3",
+      "4",
+      "8"
+     ],
+     "answer": 2,
+     "explanation": "A 2 by 2 grid has four axes."
+    }
+   ]
+  }
+ ],
+ "quiz": [
+  {
+   "chapter": 14,
+   "question": "What does this print?",
+   "code": "import matplotlib.pyplot as plt\nfig, ax = plt.subplots()\nax.plot([1, 2, 3], [2, 4, 6])\nprint(len(ax.lines))",
+   "options": [
+    "1",
+    "2",
+    "0",
+    "3"
+   ],
+   "answer": 0,
+   "explanation": "One line was plotted on the axes.",
+   "id": "mpl1"
+  },
+  {
+   "chapter": 14,
+   "question": "What does this print?",
+   "code": "import matplotlib.pyplot as plt\nfig, ax = plt.subplots()\nax.bar([\"a\", \"b\", \"c\"], [1, 2, 3])\nprint(len(ax.patches))",
+   "options": [
+    "3",
+    "1",
+    "2",
+    "6"
+   ],
+   "answer": 0,
+   "explanation": "A bar chart draws one rectangle per bar.",
+   "id": "mpl2"
+  },
+  {
+   "chapter": 14,
+   "question": "What does this print?",
+   "code": "import matplotlib.pyplot as plt\nfig, ax = plt.subplots()\nax.set_title(\"Squares\")\nprint(ax.get_title())",
+   "options": [
+    "Squares",
+    "title",
+    "None",
+    "Error"
+   ],
+   "answer": 0,
+   "explanation": "get_title returns the title text.",
+   "id": "mpl3"
+  }
+ ],
+ "examples": [
+  {
+   "id": "mpl_line",
+   "title": "Matplotlib: Line Plot",
+   "description": "Two styled lines with a legend.",
+   "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\nx = np.linspace(0, 6.28, 100)\nplt.plot(x, np.sin(x), label=\"sin\", color=\"tab:blue\")\nplt.plot(x, np.cos(x), label=\"cos\", color=\"tab:orange\", linestyle=\"--\")\nplt.legend()\nplt.title(\"Sine and cosine\")\nplt.show()\nprint(\"drawn\")\n"
+  },
+  {
+   "id": "mpl_scatter",
+   "title": "Matplotlib: Scatter",
+   "description": "Random points colored by value.",
+   "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\nrng = np.random.default_rng(1)\nx = rng.random(40)\ny = rng.random(40)\nplt.scatter(x, y, c=x + y, cmap=\"plasma\")\nplt.colorbar()\nplt.title(\"Scatter\")\nplt.show()\nprint(len(x), \"points\")\n"
+  },
+  {
+   "id": "mpl_bar",
+   "title": "Matplotlib: Bar Chart",
+   "description": "Compare categories.",
+   "code": "import matplotlib.pyplot as plt\n\nlangs = [\"Python\", \"Kotlin\", \"Rust\"]\nscores = [9, 8, 7]\nplt.bar(langs, scores, color=[\"green\", \"purple\", \"orange\"])\nplt.ylabel(\"Score\")\nplt.title(\"Favorites\")\nplt.show()\nprint(max(scores))\n"
+  },
+  {
+   "id": "mpl_histogram",
+   "title": "Matplotlib: Histogram",
+   "description": "Distribution of random data.",
+   "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\nrng = np.random.default_rng(7)\ndata = rng.normal(50, 10, 500)\nplt.hist(data, bins=15, color=\"steelblue\", edgecolor=\"white\")\nplt.title(\"Normal data\")\nplt.show()\nprint(round(data.mean()))\n"
+  },
+  {
+   "id": "mpl_boxplot",
+   "title": "Matplotlib: Box Plot",
+   "description": "Compare spreads of groups.",
+   "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\nrng = np.random.default_rng(3)\ngroups = [rng.normal(m, 5, 60) for m in (10, 15, 20)]\nplt.boxplot(groups)\nplt.xticks([1, 2, 3], [\"A\", \"B\", \"C\"])\nplt.title(\"Box plot\")\nplt.show()\nprint(len(groups))\n"
+  },
+  {
+   "id": "mpl_pie",
+   "title": "Matplotlib: Pie Chart",
+   "description": "Shares of a whole.",
+   "code": "import matplotlib.pyplot as plt\n\nlabels = [\"Rent\", \"Food\", \"Fun\", \"Savings\"]\nsizes = [40, 25, 15, 20]\nplt.pie(sizes, labels=labels, autopct=\"%1.0f%%\")\nplt.title(\"Budget\")\nplt.show()\nprint(sum(sizes))\n"
+  },
+  {
+   "id": "mpl_heatmap",
+   "title": "Matplotlib: Heatmap",
+   "description": "Color a matrix.",
+   "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\ntable = np.add.outer(np.arange(6), np.arange(6))\nplt.imshow(table, cmap=\"magma\")\nplt.colorbar(label=\"row + column\")\nplt.title(\"Heatmap\")\nplt.show()\nprint(table.max())\n"
+  },
+  {
+   "id": "mpl_subplots",
+   "title": "Matplotlib: Subplots",
+   "description": "Several charts in one figure.",
+   "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\nx = np.linspace(0, 5, 50)\nfig, axes = plt.subplots(2, 2, figsize=(7, 5))\naxes[0, 0].plot(x, x)\naxes[0, 1].plot(x, x ** 2, color=\"red\")\naxes[1, 0].bar([1, 2, 3], [3, 1, 2])\naxes[1, 1].scatter(x, np.sin(x))\nfig.tight_layout()\nplt.show()\nprint(axes.shape)\n"
+  },
+  {
+   "id": "mpl_styling",
+   "title": "Matplotlib: Styling",
+   "description": "Colors, grid, limits and annotations.",
+   "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\nx = np.linspace(0, 10, 200)\nfig, ax = plt.subplots(figsize=(6, 4))\nax.plot(x, np.sin(x), color=\"crimson\", linewidth=2.5)\nax.fill_between(x, np.sin(x), alpha=0.2, color=\"crimson\")\nax.set_xlim(0, 10)\nax.set_ylim(-1.5, 1.5)\nax.grid(True, linestyle=\":\")\nax.annotate(\"peak\", xy=(1.57, 1), xytext=(3, 1.25), arrowprops={\"arrowstyle\": \"->\"})\nax.set_title(\"Styled sine\")\nplt.show()\nprint(\"styled\")\n"
+  }
+ ],
+ "challenges": [
+  {
+   "id": "mpl_line_count",
+   "title": "Matplotlib: Plot a Line",
+   "prompt": "Plot the points (1, 2), (2, 4), (3, 6) as one line on ax, then show the figure.",
+   "starter": "import matplotlib.pyplot as plt\n\nfig, ax = plt.subplots()\n# Plot the three points as a line on ax\nplt.show()\nprint(len(ax.lines))\n",
+   "expected": "1",
+   "stdin": ""
+  },
+  {
+   "id": "mpl_bar_count",
+   "title": "Matplotlib: Three Bars",
+   "prompt": "Draw a bar chart with the labels a, b, c and heights 4, 7, 2, then print how many bars it has.",
+   "starter": "import matplotlib.pyplot as plt\n\nfig, ax = plt.subplots()\n# Draw the three bars on ax\nplt.show()\nprint(len(ax.patches))\n",
+   "expected": "3",
+   "stdin": ""
+  }
+ ]
+}

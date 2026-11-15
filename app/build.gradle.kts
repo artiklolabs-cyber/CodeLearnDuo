@@ -44,6 +44,13 @@ kotlin {
 chaquopy {
     defaultConfig {
         version = "3.13"
+        pip {
+            install("numpy")
+            install("matplotlib")
+            install("pandas")
+            install("sympy")
+            install("Pillow")
+        }
     }
 }
 

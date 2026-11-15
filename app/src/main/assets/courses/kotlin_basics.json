@@ -843,7 +843,7 @@
    "id": "string_templates",
    "title": "String Templates",
    "description": "Embed values in text.",
-   "code": "fun main() {\n    val name = \"Kotlin\"\n    println(\"Hello, $name!\")\n    println(\"Length: ${name.length}\")\n    println(name.uppercase())\n    println(name.reversed())\n}\n"
+   "code": "fun main() {\n    val name = \"Kotlin\"\n    println(\"Hello, $name!\")\n    println(\"Length: ${name.length}\")\n    println(name.drop(2))\n    println(name.reversed())\n}\n"
   },
   {
    "id": "null_safety",

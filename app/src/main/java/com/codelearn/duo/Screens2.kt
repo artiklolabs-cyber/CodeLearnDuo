@@ -78,7 +78,7 @@ fun QuizScreen(vm: AppViewModel, onSwitchCourse: () -> Unit, onPlay: (String, In
             containerColor = Pal.card,
             title = { Text("Choose a chapter", color = Pal.text) },
             text = {
-                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     course.chapters.forEach { ch ->
                         Row(
                             Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp)).clickable { pick = false; onPlay("chapter", ch.number) }.padding(10.dp),
@@ -373,6 +373,7 @@ fun ChallengeScreen(vm: AppViewModel, courseId: String, challengeId: String, onB
                     Text("Not yet: the output does not match.", color = Pal.red, fontWeight = FontWeight.Bold)
                 }
                 OutputBlock(r.stdout, label = "Your output (${r.elapsedTime} ms):")
+                OutputImages(r.images)
                 if (r.errorOutput.isNotBlank()) OutputBlock(r.errorOutput, label = "Errors:", color = Pal.red)
             }
         }

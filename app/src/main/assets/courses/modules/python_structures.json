@@ -1,0 +1,901 @@
+{
+ "id": "python_structures",
+ "course": "python_basics",
+ "order": 10,
+ "chapters": [
+  {
+   "number": 7,
+   "section": "DATA STRUCTURES",
+   "title": "Nested Data, Sets & Tuples",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Nesting structures",
+     "body": "Real data is rarely flat. A **list of dicts**, a **dict of lists** or a **list of lists** lets you model tables and records.\n\nChain **indexes** to dig in: students[0][\"scores\"][1] reads the second score of the first student."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "Sets and tuples",
+     "body": "A **set** holds **unique** items and supports math-style operations: **|** union, **&** intersection and **-** difference.\n\nA **tuple** is an **immutable** sequence. It is perfect for fixed groups like (x, y) and supports **unpacking**."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Walking nested data",
+     "code": "students = [\n    {\"name\": \"Ada\", \"scores\": [90, 85]},\n    {\"name\": \"Linus\", \"scores\": [70, 95]},\n]\nprint(students[0][\"name\"])\nprint(students[1][\"scores\"][1])\nfor s in students:\n    print(s[\"name\"], sum(s[\"scores\"]) / len(s[\"scores\"]))",
+     "notes": [
+      {
+       "line": 1,
+       "text": "A list that contains dictionaries, each with a list inside."
+      },
+      {
+       "line": 5,
+       "text": "Index the list, then the key."
+      },
+      {
+       "line": 6,
+       "text": "Chain three lookups: list, key, list."
+      },
+      {
+       "line": 8,
+       "text": "Compute an average for every record."
+      }
+     ],
+     "output": "Ada\n95\nAda 87.5\nLinus 82.5"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Set operations and tuple unpacking",
+     "code": "a = {1, 2, 3}\nb = {3, 4}\nprint(a | b)\nprint(a & b)\nprint(a - b)\npoint = (3, 4)\nx, y = point\nprint(x + y)",
+     "notes": [
+      {
+       "line": 3,
+       "text": "Union keeps every distinct item."
+      },
+      {
+       "line": 4,
+       "text": "Intersection keeps items found in both."
+      },
+      {
+       "line": 5,
+       "text": "Difference keeps items only in the first set."
+      },
+      {
+       "line": 7,
+       "text": "Unpacking assigns each tuple item to a name."
+      }
+     ],
+     "output": "{1, 2, 3, 4}\n{3}\n{1, 2}\n7"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does len({1, 1, 2}) return?",
+     "code": "",
+     "options": [
+      "3",
+      "2",
+      "1",
+      "Error"
+     ],
+     "answer": 1,
+     "explanation": "A set stores each value once, so only 1 and 2 remain."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "Which statement about tuples is true?",
+     "code": "",
+     "options": [
+      "They can be changed in place",
+      "They are immutable sequences",
+      "They cannot be indexed",
+      "They only hold numbers"
+     ],
+     "answer": 1,
+     "explanation": "Tuples cannot be modified after creation, but they can be indexed and hold any type."
+    }
+   ]
+  },
+  {
+   "number": 8,
+   "section": "DATA STRUCTURES",
+   "title": "Comprehensions, Generators & Iterators",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Comprehensions everywhere",
+     "body": "Besides lists, you can build **dicts** and **sets** in one line: {n: n * n for n in nums} and {c for c in text}.\n\nAdd an **if** clause to filter while you build."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "Lazy values with yield",
+     "body": "A **generator** function uses **yield** to hand back one value at a time and pause. Values are produced **lazily**, so huge sequences use almost no memory.\n\nAn **iterator** is anything you can pass to **next()**; for loops use them behind the scenes."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Three kinds of comprehension",
+     "code": "nums = range(1, 7)\nevens = [n for n in nums if n % 2 == 0]\nsquares = {n: n * n for n in nums if n < 4}\nletters = {c for c in \"hello\"}\nprint(evens)\nprint(squares)\nprint(sorted(letters))",
+     "notes": [
+      {
+       "line": 2,
+       "text": "A list comprehension with a filter."
+      },
+      {
+       "line": 3,
+       "text": "A dict comprehension maps number to square."
+      },
+      {
+       "line": 4,
+       "text": "A set comprehension removes the duplicate l."
+      },
+      {
+       "line": 7,
+       "text": "Sets are unordered, so sort before printing."
+      }
+     ],
+     "output": "[2, 4, 6]\n{1: 1, 2: 4, 3: 9}\n['e', 'h', 'l', 'o']"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "A generator function",
+     "code": "def countdown(n):\n    while n > 0:\n        yield n\n        n -= 1\n\nfor i in countdown(3):\n    print(i)\nprint(sum(x * x for x in range(4)))",
+     "notes": [
+      {
+       "line": 3,
+       "text": "yield returns a value and pauses the function here."
+      },
+      {
+       "line": 6,
+       "text": "The loop pulls one value at a time."
+      },
+      {
+       "line": 8,
+       "text": "A generator expression feeds sum without building a list."
+      }
+     ],
+     "output": "3\n2\n1\n14"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Manual iteration",
+     "code": "it = iter([10, 20])\nprint(next(it))\nprint(next(it))\nprint(next(it, \"done\"))",
+     "notes": [
+      {
+       "line": 1,
+       "text": "iter() creates an iterator from a list."
+      },
+      {
+       "line": 4,
+       "text": "The second argument of next is a default when items run out."
+      }
+     ],
+     "output": "10\n20\ndone"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does yield do inside a function?",
+     "code": "",
+     "options": [
+      "Ends the program",
+      "Produces a value and pauses the function",
+      "Prints a value",
+      "Creates a list"
+     ],
+     "answer": 1,
+     "explanation": "yield hands back a value and remembers where the function stopped."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What do the two prints show?",
+     "code": "g = (n for n in range(3))\nprint(list(g))\nprint(list(g))",
+     "options": [
+      "[0, 1, 2] then [0, 1, 2]",
+      "[0, 1, 2] then []",
+      "[] then [0, 1, 2]",
+      "Error"
+     ],
+     "answer": 1,
+     "explanation": "A generator is used up after one pass, so the second list is empty."
+    }
+   ]
+  },
+  {
+   "number": 9,
+   "section": "FUNCTIONS & FLOW",
+   "title": "*args, **kwargs & Decorators",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Flexible arguments",
+     "body": "**\\*args** gathers extra positional arguments into a tuple and **\\*\\*kwargs** gathers extra keyword arguments into a dict.\n\nThe same stars **unpack** a list or dict when calling a function."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "Decorators",
+     "body": "A **decorator** is a function that takes a function and returns a new one. Writing **@name** above a def is shorthand for func = name(func).\n\nUse **functools.wraps** to keep the original name and docs."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "args and kwargs",
+     "code": "def show(*args, **kwargs):\n    print(args)\n    print(kwargs)\n\nshow(1, 2, a=3)\nnums = [4, 5]\nopts = {\"sep\": \"-\"}\nprint(*nums, **opts)",
+     "notes": [
+      {
+       "line": 2,
+       "text": "args is a tuple of the positional values."
+      },
+      {
+       "line": 3,
+       "text": "kwargs is a dict of the keyword values."
+      },
+      {
+       "line": 8,
+       "text": "The stars unpack the list and the dict into the call."
+      }
+     ],
+     "output": "(1, 2)\n{'a': 3}\n4-5"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Your first decorator",
+     "code": "def shout(func):\n    def wrapper(*args, **kwargs):\n        return func(*args, **kwargs).upper()\n    return wrapper\n\n@shout\ndef greet(name):\n    return \"hello \" + name\n\nprint(greet(\"ada\"))",
+     "notes": [
+      {
+       "line": 1,
+       "text": "The decorator receives the original function."
+      },
+      {
+       "line": 2,
+       "text": "The wrapper accepts any arguments."
+      },
+      {
+       "line": 3,
+       "text": "It calls the original and changes the result."
+      },
+      {
+       "line": 7,
+       "text": "@shout means greet = shout(greet)."
+      }
+     ],
+     "output": "HELLO ADA"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Decorators with wraps",
+     "code": "from functools import wraps\n\ndef logged(func):\n    @wraps(func)\n    def wrapper(*args):\n        print(\"calling\", func.__name__)\n        return func(*args)\n    return wrapper\n\n@logged\ndef add(a, b):\n    return a + b\n\nprint(add(2, 3))",
+     "notes": [
+      {
+       "line": 4,
+       "text": "wraps copies the name of add onto wrapper."
+      },
+      {
+       "line": 6,
+       "text": "The wrapper adds behavior before the real call."
+      }
+     ],
+     "output": "calling add\n5"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What is @shout above def greet equivalent to?",
+     "code": "",
+     "options": [
+      "greet = shout",
+      "greet = shout(greet)",
+      "shout = greet(shout)",
+      "shout(greet())"
+     ],
+     "answer": 1,
+     "explanation": "The decorator is called with the function and its return value replaces the name."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does this print?",
+     "code": "def f(**kw):\n    print(sorted(kw))\n\nf(b=1, a=2)",
+     "options": [
+      "['a', 'b']",
+      "['b', 'a']",
+      "{'a': 2, 'b': 1}",
+      "Error"
+     ],
+     "answer": 0,
+     "explanation": "sorted() returns the keys in order."
+    }
+   ]
+  },
+  {
+   "number": 10,
+   "section": "FUNCTIONS & FLOW",
+   "title": "Context Managers & Exceptions",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Handling errors",
+     "body": "Wrap risky code in **try** and catch problems with **except**. Add **else** for code that runs when nothing failed and **finally** for cleanup that must always run.\n\nUse **raise** to signal your own errors, often with a custom exception class."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "The with statement",
+     "body": "A **context manager** sets something up and always tears it down, even after errors. **with open(path) as f** is the classic example.\n\nBuild your own with **__enter__** and **__exit__**, or the **@contextmanager** decorator."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "try, except, else, finally",
+     "code": "def divide(a, b):\n    try:\n        result = a / b\n    except ZeroDivisionError:\n        return \"cannot divide by zero\"\n    else:\n        return result\n    finally:\n        print(\"done\")\n\nprint(divide(6, 3))\nprint(divide(1, 0))",
+     "notes": [
+      {
+       "line": 4,
+       "text": "Catches only the error we expect."
+      },
+      {
+       "line": 7,
+       "text": "Runs only when no exception occurred."
+      },
+      {
+       "line": 9,
+       "text": "finally always runs, before the value is returned."
+      }
+     ],
+     "output": "done\n2.0\ndone\ncannot divide by zero"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Custom exceptions",
+     "code": "class LowBalance(Exception):\n    pass\n\ndef withdraw(balance, amount):\n    if amount > balance:\n        raise LowBalance(f\"need {amount - balance} more\")\n    return balance - amount\n\ntry:\n    withdraw(10, 25)\nexcept LowBalance as err:\n    print(\"Error:\", err)",
+     "notes": [
+      {
+       "line": 1,
+       "text": "Subclass Exception to make your own error type."
+      },
+      {
+       "line": 6,
+       "text": "raise stops the function and sends the error upward."
+      },
+      {
+       "line": 12,
+       "text": "as err gives access to the exception object."
+      }
+     ],
+     "output": "Error: need 15 more"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "A context manager",
+     "code": "from contextlib import contextmanager\n\n@contextmanager\ndef section(name):\n    print(\"start\", name)\n    try:\n        yield\n    finally:\n        print(\"end\", name)\n\nwith section(\"demo\"):\n    print(\"working\")",
+     "notes": [
+      {
+       "line": 4,
+       "text": "Code before yield is the setup."
+      },
+      {
+       "line": 6,
+       "text": "yield hands control to the with body."
+      },
+      {
+       "line": 8,
+       "text": "The cleanup runs even if the body fails."
+      }
+     ],
+     "output": "start demo\nworking\nend demo"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "When does a finally block run?",
+     "code": "",
+     "options": [
+      "Only after an error",
+      "Only when there is no error",
+      "Whether or not an error occurred",
+      "Never automatically"
+     ],
+     "answer": 2,
+     "explanation": "finally is for cleanup that must always happen."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does this print?",
+     "code": "try:\n    int(\"x\")\nexcept ValueError:\n    print(\"bad\")",
+     "options": [
+      "bad",
+      "7",
+      "Error",
+      "Nothing"
+     ],
+     "answer": 0,
+     "explanation": "int('x') raises ValueError, which the except block handles."
+    }
+   ]
+  },
+  {
+   "number": 11,
+   "section": "OBJECTS & FILES",
+   "title": "OOP & Dataclasses",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Classes and objects",
+     "body": "A **class** is a blueprint. **__init__** sets up each new object and **self** refers to the object itself. Functions inside a class are **methods**."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "Inheritance and dataclasses",
+     "body": "A subclass inherits everything from its parent and can **override** methods. Call the parent with **super()**.\n\nThe **@dataclass** decorator writes **__init__**, **__repr__** and **__eq__** for you from the annotated fields."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "A simple class",
+     "code": "class Dog:\n    def __init__(self, name):\n        self.name = name\n\n    def speak(self):\n        return f\"{self.name} says woof\"\n\nprint(Dog(\"Rex\").speak())",
+     "notes": [
+      {
+       "line": 2,
+       "text": "__init__ runs when you create a Dog."
+      },
+      {
+       "line": 3,
+       "text": "Store data on the object with self."
+      },
+      {
+       "line": 8,
+       "text": "Creating and using an object in one line."
+      }
+     ],
+     "output": "Rex says woof"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Inheritance",
+     "code": "class Animal:\n    def __init__(self, name):\n        self.name = name\n\n    def speak(self):\n        return \"silence\"\n\nclass Cat(Animal):\n    def speak(self):\n        return f\"{self.name} says meow\"\n\nfor pet in [Animal(\"Generic\"), Cat(\"Tom\")]:\n    print(pet.speak())",
+     "notes": [
+      {
+       "line": 9,
+       "text": "Cat inherits from Animal."
+      },
+      {
+       "line": 10,
+       "text": "Overrides the parent method."
+      },
+      {
+       "line": 13,
+       "text": "Each object uses its own version of speak."
+      }
+     ],
+     "output": "silence\nTom says meow"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Dataclasses",
+     "code": "from dataclasses import dataclass\n\n@dataclass\nclass Point:\n    x: int\n    y: int = 0\n\np = Point(3)\nprint(p)\nprint(p == Point(3, 0))",
+     "notes": [
+      {
+       "line": 3,
+       "text": "The decorator generates the boilerplate."
+      },
+      {
+       "line": 5,
+       "text": "y has a default value."
+      },
+      {
+       "line": 9,
+       "text": "The generated repr shows every field."
+      },
+      {
+       "line": 10,
+       "text": "The generated eq compares field values."
+      }
+     ],
+     "output": "Point(x=3, y=0)\nTrue"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does @dataclass generate automatically?",
+     "code": "",
+     "options": [
+      "Only __init__",
+      "__init__, __repr__ and __eq__",
+      "A database table",
+      "Nothing"
+     ],
+     "answer": 1,
+     "explanation": "It writes the common special methods from your annotated fields."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does this print?",
+     "code": "class A:\n    def hi(self):\n        return \"A\"\n\nclass B(A):\n    pass\n\nprint(B().hi())",
+     "options": [
+      "A",
+      "B",
+      "Error",
+      "None"
+     ],
+     "answer": 0,
+     "explanation": "B inherits hi() from A."
+    }
+   ]
+  },
+  {
+   "number": 12,
+   "section": "OBJECTS & FILES",
+   "title": "Files, JSON & CSV",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Reading and writing files",
+     "body": "**open(path, mode)** returns a file object. Modes include **r** read, **w** write and **a** append. Always use **with** so the file closes automatically.\n\nOn a phone, write to a **temporary folder** such as tempfile.gettempdir()."
+    },
+    {
+     "type": "CONCEPT",
+     "title": "JSON and CSV",
+     "body": "The **json** module converts between Python data and text: **dumps** and **loads**. The **csv** module reads rows, and **DictReader** turns each row into a dict keyed by the header.\n\nUse **io.StringIO** to practice with text that behaves like a file."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Writing and reading a file",
+     "code": "import os\nimport tempfile\n\npath = os.path.join(tempfile.gettempdir(), \"demo.txt\")\nwith open(path, \"w\") as f:\n    f.write(\"one\\ntwo\\n\")\nwith open(path) as f:\n    for line in f:\n        print(line.strip())\nos.remove(path)",
+     "notes": [
+      {
+       "line": 4,
+       "text": "Build a path inside the temp folder."
+      },
+      {
+       "line": 5,
+       "text": "Mode w creates or overwrites the file."
+      },
+      {
+       "line": 8,
+       "text": "Iterating a file yields one line at a time."
+      },
+      {
+       "line": 10,
+       "text": "Clean up the temporary file."
+      }
+     ],
+     "output": "one\ntwo"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "JSON round trip",
+     "code": "import json\n\ndata = {\"name\": \"Ada\", \"langs\": [\"Python\", \"Kotlin\"]}\ntext = json.dumps(data)\nprint(text)\nback = json.loads(text)\nprint(back[\"langs\"][1])",
+     "notes": [
+      {
+       "line": 4,
+       "text": "dumps turns Python data into a JSON string."
+      },
+      {
+       "line": 6,
+       "text": "loads parses the string back into dicts and lists."
+      }
+     ],
+     "output": "{\"name\": \"Ada\", \"langs\": [\"Python\", \"Kotlin\"]}\nKotlin"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Reading CSV",
+     "code": "import csv\nimport io\n\nraw = \"name,age\\nAda,36\\nLinus,28\\n\"\nrows = list(csv.DictReader(io.StringIO(raw)))\nprint(rows[0][\"name\"])\nprint(sum(int(r[\"age\"]) for r in rows))",
+     "notes": [
+      {
+       "line": 4,
+       "text": "The text of a tiny CSV file."
+      },
+      {
+       "line": 5,
+       "text": "StringIO makes it act like a file and DictReader keys each row by the header."
+      },
+      {
+       "line": 7,
+       "text": "CSV values are strings, so convert before adding."
+      }
+     ],
+     "output": "Ada\n64"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "Why use with open(...) as f?",
+     "code": "",
+     "options": [
+      "It makes the file read-only",
+      "It closes the file automatically",
+      "It speeds up the CPU",
+      "It encrypts the file"
+     ],
+     "answer": 1,
+     "explanation": "The with block guarantees the file is closed, even after an error."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does json.dumps([1, 'x']) return?",
+     "code": "",
+     "options": [
+      "A list",
+      "A string containing JSON",
+      "A dict",
+      "None"
+     ],
+     "answer": 1,
+     "explanation": "dumps returns text; loads goes the other way."
+    }
+   ]
+  }
+ ],
+ "quiz": [
+  {
+   "chapter": 7,
+   "question": "What does this print?",
+   "code": "d = {\"a\": [1, 2], \"b\": [3]}\nprint(len(d[\"a\"]))",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "Error"
+   ],
+   "answer": 1,
+   "explanation": "d[\"a\"] is a list with two items.",
+   "id": "ps1"
+  },
+  {
+   "chapter": 7,
+   "question": "What does this print?",
+   "code": "print({1, 2, 2, 3} == {3, 2, 1})",
+   "options": [
+    "True",
+    "False",
+    "Error",
+    "None"
+   ],
+   "answer": 0,
+   "explanation": "Sets ignore order and duplicates.",
+   "id": "ps2"
+  },
+  {
+   "chapter": 8,
+   "question": "What does this print?",
+   "code": "print([x * 2 for x in range(3)])",
+   "options": [
+    "[0, 2, 4]",
+    "[1, 2, 3]",
+    "[0, 1, 2]",
+    "[2, 4, 6]"
+   ],
+   "answer": 0,
+   "explanation": "The comprehension doubles 0, 1 and 2.",
+   "id": "ps3"
+  },
+  {
+   "chapter": 8,
+   "question": "What does this print?",
+   "code": "def g():\n    yield 1\n    yield 2\n\nprint(next(g()))",
+   "options": [
+    "1",
+    "2",
+    "[1, 2]",
+    "Error"
+   ],
+   "answer": 0,
+   "explanation": "next() on a fresh generator gives its first yielded value.",
+   "id": "ps4"
+  },
+  {
+   "chapter": 9,
+   "question": "What does this print?",
+   "code": "def f(*a):\n    return len(a)\n\nprint(f(1, 2, 3))",
+   "options": [
+    "1",
+    "3",
+    "(1, 2, 3)",
+    "Error"
+   ],
+   "answer": 1,
+   "explanation": "*a collects three arguments into a tuple of length 3.",
+   "id": "ps5"
+  },
+  {
+   "chapter": 9,
+   "question": "What does this print?",
+   "code": "def twice(fn):\n    def w(x):\n        return fn(fn(x))\n    return w\n\n@twice\ndef inc(x):\n    return x + 1\n\nprint(inc(1))",
+   "options": [
+    "2",
+    "3",
+    "1",
+    "Error"
+   ],
+   "answer": 1,
+   "explanation": "The decorator calls inc twice: 1 becomes 2, then 3.",
+   "id": "ps6"
+  },
+  {
+   "chapter": 10,
+   "question": "What does this print?",
+   "code": "try:\n    [1][5]\nexcept IndexError:\n    print(\"oops\")\nfinally:\n    print(\"end\")",
+   "options": [
+    "oops",
+    "end",
+    "oops then end",
+    "Error"
+   ],
+   "answer": 2,
+   "explanation": "The except block runs, then finally.",
+   "id": "ps7"
+  },
+  {
+   "chapter": 10,
+   "question": "Which special method runs when a with block ends?",
+   "code": "",
+   "options": [
+    "__init__",
+    "__enter__",
+    "__exit__",
+    "__del__"
+   ],
+   "answer": 2,
+   "explanation": "__exit__ performs the cleanup.",
+   "id": "ps8"
+  },
+  {
+   "chapter": 11,
+   "question": "What does this print?",
+   "code": "from dataclasses import dataclass\n\n@dataclass\nclass P:\n    x: int\n\nprint(P(1) == P(1))",
+   "options": [
+    "True",
+    "False",
+    "Error",
+    "None"
+   ],
+   "answer": 0,
+   "explanation": "Dataclasses compare their fields.",
+   "id": "ps9"
+  },
+  {
+   "chapter": 11,
+   "question": "What does super() give you?",
+   "code": "",
+   "options": [
+    "A copy of the object",
+    "Access to the parent class",
+    "A new module",
+    "A faster method"
+   ],
+   "answer": 1,
+   "explanation": "super() lets a subclass call the parent class implementation.",
+   "id": "ps10"
+  },
+  {
+   "chapter": 12,
+   "question": "What does this print?",
+   "code": "import json\nprint(json.loads('{\"a\": 1}')[\"a\"])",
+   "options": [
+    "1",
+    "a",
+    "{'a': 1}",
+    "Error"
+   ],
+   "answer": 0,
+   "explanation": "loads parses the text and we read key a.",
+   "id": "ps11"
+  },
+  {
+   "chapter": 12,
+   "question": "What does this print?",
+   "code": "import json\nprint(json.dumps([1, \"x\"]))",
+   "options": [
+    "[1, \"x\"]",
+    "[1, 'x']",
+    "(1, 'x')",
+    "Error"
+   ],
+   "answer": 0,
+   "explanation": "JSON uses double quotes.",
+   "id": "ps12"
+  }
+ ],
+ "examples": [
+  {
+   "id": "nested_data_demo",
+   "title": "Nested Data",
+   "description": "A list of dicts with nested lists.",
+   "code": "people = [\n    {\"name\": \"Ada\", \"skills\": [\"math\", \"code\"]},\n    {\"name\": \"Linus\", \"skills\": [\"kernels\"]},\n]\nfor p in people:\n    print(p[\"name\"], \"->\", \", \".join(p[\"skills\"]))\nprint(sum(len(p[\"skills\"]) for p in people))\n"
+  },
+  {
+   "id": "set_operations",
+   "title": "Set Operations",
+   "description": "Union, intersection and difference.",
+   "code": "python = {\"ada\", \"linus\", \"grace\"}\nkotlin = {\"grace\", \"linus\", \"anders\"}\nprint(sorted(python | kotlin))\nprint(sorted(python & kotlin))\nprint(sorted(python - kotlin))\nprint(sorted(python ^ kotlin))\n"
+  },
+  {
+   "id": "comprehension_gallery",
+   "title": "Comprehension Gallery",
+   "description": "List, dict and set comprehensions.",
+   "code": "words = [\"apple\", \"kiwi\", \"banana\", \"fig\"]\nprint([w.title() for w in words if len(w) > 3])\nprint({w: len(w) for w in words})\nprint(sorted({len(w) for w in words}))\n"
+  },
+  {
+   "id": "generator_pipeline",
+   "title": "Generator Pipeline",
+   "description": "Chain lazy generators.",
+   "code": "def numbers():\n    n = 1\n    while True:\n        yield n\n        n += 1\n\ndef squares(source):\n    for n in source:\n        yield n * n\n\ndef limit(source, count):\n    for _ in range(count):\n        yield next(source)\n\nprint(list(limit(squares(numbers()), 6)))\n"
+  },
+  {
+   "id": "decorator_logging",
+   "title": "Decorator Logging",
+   "description": "Wrap a function with a decorator.",
+   "code": "from functools import wraps\n\ndef logged(func):\n    @wraps(func)\n    def wrapper(*args, **kwargs):\n        result = func(*args, **kwargs)\n        print(f\"{func.__name__}{args} -> {result}\")\n        return result\n    return wrapper\n\n@logged\ndef add(a, b):\n    return a + b\n\nadd(2, 3)\nadd(10, 5)\n"
+  },
+  {
+   "id": "context_manager_demo",
+   "title": "Context Manager",
+   "description": "Setup and cleanup with with.",
+   "code": "from contextlib import contextmanager\n\n@contextmanager\ndef tag(name):\n    print(f\"<{name}>\")\n    yield\n    print(f\"</{name}>\")\n\nwith tag(\"p\"):\n    print(\"Hello\")\n"
+  },
+  {
+   "id": "exception_handling",
+   "title": "Exception Handling",
+   "description": "try, except, else and finally.",
+   "code": "def parse(text):\n    try:\n        value = int(text)\n    except ValueError:\n        print(text, \"is not a number\")\n    else:\n        print(text, \"doubled is\", value * 2)\n    finally:\n        print(\"checked\", text)\n\nparse(\"21\")\nparse(\"abc\")\n"
+  },
+  {
+   "id": "oop_inheritance",
+   "title": "OOP Inheritance",
+   "description": "Classes, super() and overriding.",
+   "code": "class Vehicle:\n    def __init__(self, name):\n        self.name = name\n\n    def describe(self):\n        return f\"{self.name} is a vehicle\"\n\nclass Bike(Vehicle):\n    def __init__(self, name, gears):\n        super().__init__(name)\n        self.gears = gears\n\n    def describe(self):\n        return super().describe() + f\" with {self.gears} gears\"\n\nprint(Bike(\"Roadster\", 21).describe())\n"
+  },
+  {
+   "id": "dataclass_demo",
+   "title": "Dataclass",
+   "description": "Generated init, repr and eq.",
+   "code": "from dataclasses import dataclass, field\n\n@dataclass\nclass Cart:\n    owner: str\n    items: list = field(default_factory=list)\n\n    def total(self):\n        return sum(price for _, price in self.items)\n\ncart = Cart(\"Ada\")\ncart.items.append((\"pen\", 2.5))\ncart.items.append((\"book\", 12.0))\nprint(cart)\nprint(cart.total())\n"
+  },
+  {
+   "id": "json_roundtrip",
+   "title": "JSON Round Trip",
+   "description": "Serialize and parse data.",
+   "code": "import json\n\nprofile = {\"name\": \"Ada\", \"langs\": [\"Python\", \"Kotlin\"], \"active\": True}\ntext = json.dumps(profile, indent=2)\nprint(text)\nprint(json.loads(text)[\"langs\"][0])\n"
+  },
+  {
+   "id": "csv_report",
+   "title": "CSV Report",
+   "description": "Summarize CSV text.",
+   "code": "import csv\nimport io\n\nraw = \"item,qty,price\\npen,4,1.5\\nbook,2,12.0\\ncup,3,4.0\\n\"\nrows = list(csv.DictReader(io.StringIO(raw)))\ntotal = 0\nfor r in rows:\n    cost = int(r[\"qty\"]) * float(r[\"price\"])\n    total += cost\n    print(r[\"item\"], cost)\nprint(\"Total:\", total)\n"
+  }
+ ],
+ "challenges": [
+  {
+   "id": "set_dedupe",
+   "title": "Unique and Sorted",
+   "prompt": "Print the unique values of nums in ascending order as a list.",
+   "starter": "nums = [3, 1, 3, 2, 1]\n# Print the sorted unique values\n",
+   "expected": "[1, 2, 3]",
+   "stdin": ""
+  },
+  {
+   "id": "gen_evens",
+   "title": "Even Generator",
+   "prompt": "Finish the generator evens(limit) so it yields every even number from 0 up to limit inclusive.",
+   "starter": "def evens(limit):\n    # yield 0, 2, 4 and so on up to limit\n    return []\n\nprint(list(evens(10)))\n",
+   "expected": "[0, 2, 4, 6, 8, 10]",
+   "stdin": ""
+  },
+  {
+   "id": "decorator_twice",
+   "title": "Run Twice",
+   "prompt": "Write the decorator twice so the decorated function runs two times each call.",
+   "starter": "def twice(func):\n    # return a wrapper that calls func two times\n    return func\n\n@twice\ndef hello():\n    print(\"hi\")\n\nhello()\n",
+   "expected": "hi\nhi",
+   "stdin": ""
+  },
+  {
+   "id": "dataclass_total",
+   "title": "Dataclass Total",
+   "prompt": "Turn Item into a dataclass with name and price, then print the total price of the list.",
+   "starter": "class Item:\n    pass\n\nitems = [Item(\"pen\", 2.5), Item(\"book\", 12.0)]\nprint(sum(i.price for i in items))\n",
+   "expected": "14.5",
+   "stdin": ""
+  }
+ ]
+}

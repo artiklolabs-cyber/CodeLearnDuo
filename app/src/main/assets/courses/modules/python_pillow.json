@@ -1,0 +1,261 @@
+{
+ "id": "python_pillow",
+ "course": "python_basics",
+ "order": 24,
+ "chapters": [
+  {
+   "number": 17,
+   "section": "SCIENTIFIC PYTHON",
+   "title": "Pillow Image Editing",
+   "steps": [
+    {
+     "type": "CONCEPT",
+     "title": "Images in code",
+     "body": "**Pillow** (imported as **PIL**) creates and edits images. An **Image** has a **size** (width, height), a **mode** such as **RGB** or **L** (grayscale) and pixels you can read or write.\n\nCall **img.show()** and the image appears in the app's output panel."
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Creating and drawing",
+     "code": "from PIL import Image, ImageDraw\n\nimg = Image.new(\"RGB\", (60, 40), \"white\")\ndraw = ImageDraw.Draw(img)\ndraw.rectangle((5, 5, 30, 25), fill=\"red\")\nprint(img.size, img.mode)\nprint(img.getpixel((10, 10)))\nimg.show()",
+     "notes": [
+      {
+       "line": 3,
+       "text": "Image.new makes a blank 60 by 40 image."
+      },
+      {
+       "line": 4,
+       "text": "ImageDraw lets you draw shapes on it."
+      },
+      {
+       "line": 5,
+       "text": "The rectangle is filled with red."
+      },
+      {
+       "line": 7,
+       "text": "getpixel reads the color at a point."
+      },
+      {
+       "line": 8,
+       "text": "show sends the picture to the output panel."
+      }
+     ],
+     "output": "(60, 40) RGB\n(255, 0, 0)"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Resize, crop, rotate and flip",
+     "code": "from PIL import Image\n\nimg = Image.new(\"RGB\", (40, 20), \"blue\")\nprint(img.resize((20, 10)).size)\nprint(img.crop((0, 0, 10, 10)).size)\nprint(img.rotate(90, expand=True).size)\nprint(img.transpose(Image.Transpose.FLIP_LEFT_RIGHT).size)",
+     "notes": [
+      {
+       "line": 4,
+       "text": "resize returns a new image of the requested size."
+      },
+      {
+       "line": 5,
+       "text": "crop takes a box (left, top, right, bottom)."
+      },
+      {
+       "line": 6,
+       "text": "expand=True grows the canvas so nothing is cut off."
+      },
+      {
+       "line": 7,
+       "text": "A flip keeps the size."
+      }
+     ],
+     "output": "(20, 10)\n(10, 10)\n(20, 40)\n(40, 20)"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Modes, pixels and filters",
+     "code": "from PIL import Image, ImageFilter\n\nimg = Image.new(\"RGB\", (4, 4), (200, 100, 50))\ngray = img.convert(\"L\")\nprint(gray.mode, gray.getpixel((0, 0)))\nimg.putpixel((0, 0), (0, 255, 0))\nprint(img.getpixel((0, 0)))\nblurred = img.filter(ImageFilter.GaussianBlur(1))\nprint(blurred.size)",
+     "notes": [
+      {
+       "line": 4,
+       "text": "convert changes the color mode."
+      },
+      {
+       "line": 5,
+       "text": "Grayscale mixes the channels into one brightness value."
+      },
+      {
+       "line": 6,
+       "text": "putpixel changes a single pixel."
+      },
+      {
+       "line": 8,
+       "text": "Filters return a new image."
+      }
+     ],
+     "output": "L 124\n(0, 255, 0)\n(4, 4)"
+    },
+    {
+     "type": "CODE_WALKTHROUGH",
+     "title": "Building a gradient with pixels",
+     "code": "from PIL import Image\n\nimg = Image.new(\"RGB\", (8, 1))\nfor x in range(8):\n    shade = x * 32\n    img.putpixel((x, 0), (shade, 0, 255 - shade))\nprint(img.getpixel((0, 0)), img.getpixel((7, 0)))\nimg.resize((160, 20), Image.Resampling.NEAREST).show()",
+     "notes": [
+      {
+       "line": 4,
+       "text": "Compute a color for every column."
+      },
+      {
+       "line": 5,
+       "text": "Red rises while blue falls."
+      },
+      {
+       "line": 7,
+       "text": "Nearest-neighbor resize keeps hard pixel edges."
+      }
+     ],
+     "output": "(0, 0, 255) (224, 0, 31)"
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does img.size return?",
+     "code": "",
+     "options": [
+      "(height, width)",
+      "(width, height)",
+      "The number of pixels",
+      "The color mode"
+     ],
+     "answer": 1,
+     "explanation": "Pillow sizes are (width, height)."
+    },
+    {
+     "type": "MULTIPLE_CHOICE",
+     "title": "",
+     "question": "What does mode \"L\" mean?",
+     "code": "",
+     "options": [
+      "Left aligned",
+      "Grayscale",
+      "Large image",
+      "Lossless"
+     ],
+     "answer": 1,
+     "explanation": "L is single-channel grayscale."
+    }
+   ]
+  }
+ ],
+ "quiz": [
+  {
+   "chapter": 17,
+   "question": "What does this print?",
+   "code": "from PIL import Image\nprint(Image.new(\"RGB\", (30, 10)).rotate(90, expand=True).size)",
+   "options": [
+    "(30, 10)",
+    "(10, 30)",
+    "(30, 30)",
+    "(10, 10)"
+   ],
+   "answer": 1,
+   "explanation": "Rotating 90 degrees with expand swaps width and height.",
+   "id": "pil1"
+  },
+  {
+   "chapter": 17,
+   "question": "What does this print?",
+   "code": "from PIL import Image\nprint(Image.new(\"RGB\", (2, 2), \"red\").getpixel((1, 1)))",
+   "options": [
+    "(255, 0, 0)",
+    "(0, 0, 255)",
+    "255",
+    "(0, 255, 0)"
+   ],
+   "answer": 0,
+   "explanation": "The image was filled with red.",
+   "id": "pil2"
+  },
+  {
+   "chapter": 17,
+   "question": "What does this print?",
+   "code": "from PIL import Image\nprint(Image.new(\"RGB\", (2, 2)).convert(\"L\").mode)",
+   "options": [
+    "L",
+    "RGB",
+    "P",
+    "1"
+   ],
+   "answer": 0,
+   "explanation": "convert(\"L\") produces a grayscale image.",
+   "id": "pil3"
+  }
+ ],
+ "examples": [
+  {
+   "id": "pil_new_draw",
+   "title": "Pillow: Create and Draw",
+   "description": "Shapes and text on a blank canvas.",
+   "code": "from PIL import Image, ImageDraw\n\nimg = Image.new(\"RGB\", (200, 120), \"#101820\")\ndraw = ImageDraw.Draw(img)\ndraw.rectangle((10, 10, 90, 60), fill=\"tomato\", outline=\"white\")\ndraw.ellipse((110, 20, 190, 100), fill=\"seagreen\")\ndraw.line((10, 110, 190, 90), fill=\"gold\", width=4)\ndraw.text((12, 70), \"Pillow\", fill=\"white\")\nprint(img.size)\nimg.show()\n"
+  },
+  {
+   "id": "pil_filters",
+   "title": "Pillow: Filters",
+   "description": "Blur, sharpen and edge detection.",
+   "code": "from PIL import Image, ImageDraw, ImageFilter\n\nimg = Image.new(\"RGB\", (120, 80), \"white\")\nImageDraw.Draw(img).rectangle((30, 20, 90, 60), fill=\"navy\")\nblur = img.filter(ImageFilter.GaussianBlur(4))\nedges = img.filter(ImageFilter.FIND_EDGES)\nprint(blur.size, edges.size)\nblur.show()\nedges.show()\n"
+  },
+  {
+   "id": "pil_resize_crop",
+   "title": "Pillow: Resize and Crop",
+   "description": "Scale and cut out regions.",
+   "code": "from PIL import Image, ImageDraw\n\nimg = Image.new(\"RGB\", (160, 100), \"skyblue\")\nImageDraw.Draw(img).ellipse((60, 20, 120, 80), fill=\"orange\")\nsmall = img.resize((80, 50))\ncropped = img.crop((50, 10, 130, 90))\nprint(small.size, cropped.size)\ncropped.show()\n"
+  },
+  {
+   "id": "pil_rotate_flip",
+   "title": "Pillow: Rotate and Flip",
+   "description": "Orientation tools.",
+   "code": "from PIL import Image, ImageDraw\n\nimg = Image.new(\"RGB\", (120, 60), \"white\")\nImageDraw.Draw(img).polygon([(10, 50), (60, 10), (110, 50)], fill=\"purple\")\nrot = img.rotate(30, expand=True, fillcolor=\"white\")\nflip = img.transpose(Image.Transpose.FLIP_TOP_BOTTOM)\nmirror = img.transpose(Image.Transpose.FLIP_LEFT_RIGHT)\nprint(rot.size, flip.size, mirror.size)\nrot.show()\nflip.show()\n"
+  },
+  {
+   "id": "pil_modes",
+   "title": "Pillow: Color Modes",
+   "description": "RGB, grayscale and black-and-white.",
+   "code": "from PIL import Image\n\nimg = Image.new(\"RGB\", (160, 40))\nfor x in range(160):\n    for y in range(40):\n        img.putpixel((x, y), (x * 255 // 159, 80, 255 - x * 255 // 159))\ngray = img.convert(\"L\")\nbw = gray.convert(\"1\")\nprint(img.mode, gray.mode, bw.mode)\nimg.show()\ngray.show()\n"
+  },
+  {
+   "id": "pil_pixels",
+   "title": "Pillow: Pixel Operations",
+   "description": "Read, write and transform pixels.",
+   "code": "from PIL import Image\n\nimg = Image.new(\"RGB\", (64, 64))\nfor x in range(64):\n    for y in range(64):\n        img.putpixel((x, y), ((x ^ y) * 4 % 256, x * 4, y * 4))\nprint(img.getpixel((10, 20)))\ninverted = img.point(lambda v: 255 - v)\nprint(inverted.getpixel((10, 20)))\nimg.resize((192, 192), Image.Resampling.NEAREST).show()\n"
+  },
+  {
+   "id": "mix_sine_wave",
+   "title": "Mix: NumPy + Matplotlib",
+   "description": "Compute with NumPy, draw with Matplotlib.",
+   "code": "import numpy as np\nimport matplotlib.pyplot as plt\n\nt = np.linspace(0, 2 * np.pi, 200)\nsignal = np.sin(t) + 0.5 * np.sin(3 * t)\nplt.plot(t, signal, color=\"teal\")\nplt.title(\"Two harmonics\")\nplt.show()\nprint(round(signal.max(), 3))\n"
+  },
+  {
+   "id": "mix_sales_chart",
+   "title": "Mix: Pandas + Matplotlib",
+   "description": "Group data then chart it.",
+   "code": "import pandas as pd\nimport matplotlib.pyplot as plt\n\ndf = pd.DataFrame({\"month\": [\"Jan\", \"Feb\", \"Jan\", \"Feb\", \"Jan\", \"Feb\"], \"shop\": [\"A\", \"A\", \"B\", \"B\", \"C\", \"C\"], \"sales\": [10, 14, 8, 9, 12, 20]})\ntotals = df.groupby(\"month\")[\"sales\"].sum()\ntotals.plot(kind=\"bar\", color=\"slateblue\")\nplt.title(\"Sales per month\")\nplt.show()\nprint(totals.to_dict())\n"
+  },
+  {
+   "id": "mix_gradient_image",
+   "title": "Mix: NumPy + Pillow",
+   "description": "Turn an array into an image.",
+   "code": "import numpy as np\nfrom PIL import Image\n\nx = np.linspace(0, 255, 128)\nrow = np.tile(x, (64, 1))\nrgb = np.stack([row, row[::-1], np.full_like(row, 128)], axis=-1).astype(\"uint8\")\nimg = Image.fromarray(rgb)\nprint(img.size, img.mode)\nimg.show()\n"
+  }
+ ],
+ "challenges": [
+  {
+   "id": "pil_red_pixel",
+   "title": "Pillow: Red Square",
+   "prompt": "Create an 8 by 8 RGB image filled with red and print the color of the pixel at (3, 3).",
+   "starter": "from PIL import Image\n\n# Create the red image and print the pixel at (3, 3)\n",
+   "expected": "(255, 0, 0)",
+   "stdin": ""
+  },
+  {
+   "id": "pil_rotate_size",
+   "title": "Pillow: Rotate",
+   "prompt": "Rotate a 30 by 10 image by 90 degrees with expand=True and print the new size.",
+   "starter": "from PIL import Image\n\nimg = Image.new(\"RGB\", (30, 10), \"white\")\n# Rotate by 90 degrees (expand=True) and print the size\n",
+   "expected": "(10, 30)",
+   "stdin": ""
+  }
+ ]
+}

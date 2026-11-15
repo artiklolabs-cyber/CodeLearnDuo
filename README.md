@@ -3,7 +3,7 @@
 A Duolingo-style Python and Kotlin learning app with a built-in mobile code editor.
 Built with Kotlin 2.4.10, Jetpack Compose (Material 3), AGP 9.2.1 and Gradle 9.6.1.
 
-* **Python** runs 100% offline on-device through Chaquopy 17.2.0 (Python 3.13).
+* **Python** runs 100% offline on-device through Chaquopy 17.2.0 (Python 3.13) with **NumPy, Matplotlib, Pandas, SymPy and Pillow** installed via `pip { }` in `app/build.gradle.kts` (SciPy is intentionally not included). Charts from `plt.show()` and images from Pillow's `img.show()` appear as images in the Editor console and challenge output.
 * **Kotlin** runs on a remote Judge0 CE sandbox (default `https://ce.judge0.com`). The Kotlin language id is discovered from `/languages`; you can override the endpoint, auth headers and language id in **More > Kotlin Compiler API Settings**.
 
 ## Build locally (Android Studio)
@@ -30,6 +30,21 @@ python3 package_project.py
 ```
 
 This writes `CodeLearnDuo.zip` (dotfiles such as `.github/workflows/android-build.yml` and `.gitignore` included).
+
+## Curriculum modules
+
+The base courses live in `app/src/main/assets/courses/python_basics.json` and `kotlin_basics.json`.
+Extra content is loaded from `app/src/main/assets/courses/modules/*.json`; each module declares a `course`, an `order`, and any of `chapters`, `quiz`, `examples` and `challenges`. New modules are picked up automatically.
+
+* `python_structures.json` - chapters 7-12: nested data, sets/tuples, comprehensions, generators, `*args`/`**kwargs`, decorators, exceptions, context managers, OOP, dataclasses, files, JSON, CSV
+* `python_numpy.json`, `python_matplotlib.json`, `python_pandas.json`, `python_sympy.json`, `python_pillow.json` - chapters 13-17 with examples, example-based quizzes and challenges
+* `kotlin_advanced.json` - chapters 7-14: null safety, ranges/`when`, collection operations and `Sequence`, extensions and lambdas, interfaces/objects/data classes, sealed types, scope functions, generics, coroutines and `Flow` concepts
+
+Progress is stored by chapter number and quiz id, so existing saved progress keeps working; modules only add new numbers and ids.
+
+**Kotlin sandbox note:** the Judge0 server picks its own Kotlin version. Runnable Kotlin examples and challenges stick to the standard library and avoid very new APIs, but `sealed interface` (lesson code) needs Kotlin 1.5 or newer, and the coroutines chapter needs `kotlinx.coroutines`, which the plain sandbox does not provide.
+
+**APK size:** the scientific libraries make the debug APK large (well over 100 MB) and the first build slow.
 
 ## Project layout
 
