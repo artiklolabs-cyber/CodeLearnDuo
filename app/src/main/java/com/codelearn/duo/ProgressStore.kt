@@ -59,8 +59,13 @@ class ProgressStore(context: Context) {
             fontSize = prefs.getInt("font_size", 14),
             xp = prefs.getInt("xp", 0),
             streak = streak,
-            done = CourseRepository.ids.associateWith { intSet("done_$it") },
-            quizDone = CourseRepository.ids.associateWith { intSet("quizdone_$it") },
+            
+done = listOf("python_basics", "kotlin_basics")
+    .associateWith { courseId -> intSet("done_$courseId") },
+
+quizDone = listOf("python_basics", "kotlin_basics")
+    .associateWith { courseId -> intSet("quizdone_$courseId") },
+            
             solved = strSet("solved"),
             mistakes = strSet("mistakes"),
             steps = steps,
