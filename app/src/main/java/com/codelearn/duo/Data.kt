@@ -84,7 +84,8 @@ data class Course(
 
 /**
  * Loads the base course files (assets/courses/<id>.json) and merges every module file found in
- * assets/courses/modules/*.json whose "course" field matches. Modules add chapters, quiz questions,
+ 
+ * JSON files inside assets/courses/modules whose "course" field matches.
  * examples and challenges. Existing chapter numbers and ids are never changed, so saved progress
  * keeps working; new content uses new chapter numbers and unique ids.
  */
